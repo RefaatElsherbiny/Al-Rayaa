@@ -1,0 +1,13 @@
+# Folders
+.idea/
+.vscode/
+node_modules/
+temp/
+tmp/
+dist/
+build/
+
+# Files
+.DS_Store
+Thumbs.db
+*.log
