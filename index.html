@@ -7,19 +7,11 @@
   <title>الراية للبرمجة والتصميم</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
-
-  <!-- Three.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
   <script>
     tailwind.config = {
       theme: {
@@ -27,74 +19,175 @@
           fontFamily: {
             display: ['Cairo', 'sans-serif'],
             body: ['Tajawal', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 7s ease-in-out infinite',
+            'float2': 'float 9s ease-in-out 2s infinite',
+            'float3': 'float 6s ease-in-out 1s infinite',
+            'spin-slow': 'spin 20s linear infinite',
+            'spin-slow-rev': 'spin 15s linear infinite reverse',
+            'pulse-slow': 'pulse 4s ease-in-out infinite',
+            'bounce-slow': 'bounce 3s ease-in-out infinite',
+            'wiggle': 'wiggle 3s ease-in-out infinite',
+            'particle': 'particle 8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '33%': { transform: 'translateY(-20px) rotate(2deg)' },
+              '66%': { transform: 'translateY(-10px) rotate(-1deg)' },
+            },
+            wiggle: {
+              '0%, 100%': { transform: 'rotate(-3deg)' },
+              '50%': { transform: 'rotate(3deg)' },
+            },
+            particle: {
+              '0%': { transform: 'translateY(0) translateX(0) scale(1)', opacity: '0.5' },
+              '50%': { transform: 'translateY(-40px) translateX(20px) scale(1.3)', opacity: '1' },
+              '100%': { transform: 'translateY(0) translateX(0) scale(1)', opacity: '0.5' },
+            },
           }
         }
       }
     }
   </script>
-
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    * {
+      box-sizing: border-box;
+    }
 
-    :root {
-      --orange: #f97316;
-      --orange-dark: #c2410c;
-      --amber: #7d4a28;
-      --bg: #fffaf5;
-      --stone-900: #1e0d02;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       font-family: 'Tajawal', sans-serif;
       direction: rtl;
       overflow-x: hidden;
-      background: var(--bg);
-      color: var(--stone-900);
-      cursor: none;
+      background: #fffaf5;
+      color: #1e0d02;
     }
 
-    h1, h2, h3, h4, h5 { font-family: 'Cairo', sans-serif; }
-
-    /* ── Custom Cursor ── */
-    #cursor {
-      position: fixed;
-      width: 12px; height: 12px;
-      background: var(--orange);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform .1s;
-      mix-blend-mode: multiply;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: 'Cairo', sans-serif;
     }
-    #cursor-follower {
-      position: fixed;
-      width: 40px; height: 40px;
-      border: 2px solid rgba(249,115,22,.4);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: all .15s ease;
-    }
-    body:hover #cursor { opacity: 1; }
-    a:hover ~ #cursor, button:hover ~ #cursor { transform: translate(-50%,-50%) scale(2); }
 
-    /* ── Canvas BG ── */
-    #hero-canvas {
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #fff7ed;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #f97316, #7d4a28);
+      border-radius: 3px;
+    }
+
+    .nav-link {
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 0;
+      bottom: -3px;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: #f97316;
+      transition: width .3s ease;
     }
 
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #fff7ed; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#f97316,#7d4a28); border-radius: 3px; }
+    .nav-link:hover::after {
+      width: 100%;
+    }
 
-    /* ── Gradient text ── */
+    .hero-grid {
+      background-image:
+        linear-gradient(rgba(249, 115, 22, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(249, 115, 22, 0.06) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .hex {
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+
+    .card-glow {
+      transition: all 0.4s ease;
+    }
+
+    .card-glow:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 70px rgba(249, 115, 22, 0.18), 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .svc-icon {
+      transition: all 0.4s cubic-bezier(.175, .885, .32, 1.275);
+    }
+
+    .svc-card:hover .svc-icon {
+      transform: scale(1.15) rotate(-8deg);
+      background: linear-gradient(135deg, #f97316, #c2410c) !important;
+      color: white !important;
+    }
+
+    .port-overlay {
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .port-card:hover .port-overlay {
+      opacity: 1;
+    }
+
+    .port-img {
+      transition: transform 0.5s ease;
+    }
+
+    .port-card:hover .port-img {
+      transform: scale(1.08);
+    }
+
     .grad-text {
       background: linear-gradient(135deg, #f97316, #7d4a28);
       -webkit-background-clip: text;
@@ -102,288 +195,196 @@
       background-clip: text;
     }
 
-    /* ── Nav ── */
-    .nav-link {
-      position: relative;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; right: 0;
-      width: 0; height: 2px;
-      background: #f97316;
-      transition: width .3s ease;
-    }
-    .nav-link:hover::after { width: 100%; }
-
-    /* ── Hero grid ── */
-    .hero-grid {
-      background-image:
-        linear-gradient(rgba(249,115,22,.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(249,115,22,.05) 1px, transparent 1px);
-      background-size: 50px 50px;
+    .blob {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
     }
 
-    /* ── Blob shape ── */
-    .blob { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-
-    /* ── 3D Card ── */
-    .card-3d {
-      transform-style: preserve-3d;
-      transition: transform 0.15s ease;
-    }
-    .card-3d-inner {
-      transform: translateZ(20px);
-    }
-
-    /* ── Hover glow ── */
-    .card-glow {
-      transition: all 0.4s ease;
-    }
-    .card-glow:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 70px rgba(249,115,22,.2), 0 10px 30px rgba(0,0,0,.06);
-    }
-
-    /* ── Service card ── */
-    .svc-icon { transition: all .4s cubic-bezier(.175,.885,.32,1.275); }
-    .svc-card:hover .svc-icon {
-      transform: scale(1.15) rotate(-8deg);
-      background: linear-gradient(135deg,#f97316,#c2410c) !important;
-      color: white !important;
-    }
-
-    /* ── Portfolio ── */
-    .port-overlay { opacity: 0; transition: opacity .4s ease; }
-    .port-card:hover .port-overlay { opacity: 1; }
-    .port-img { transition: transform .5s ease; }
-    .port-card:hover .port-img { transform: scale(1.08); }
-
-    /* ── Tech tags ── */
-    .tech-tag { transition: all .3s ease; }
-    .tech-tag:hover { background: #f97316; color: white; transform: translateY(-2px); }
-
-    /* ── Hex ── */
-    .hex { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
-
-    /* ── Orbit rings ── */
     .orbit-ring {
-      border: 1px dashed rgba(249,115,22,.25);
+      border: 1px dashed rgba(249, 115, 22, 0.25);
       border-radius: 50%;
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
-    /* ── Mobile menu ── */
-    #mobile-menu {
-      transition: max-height .4s ease, opacity .4s ease;
-      max-height: 0; overflow: hidden; opacity: 0;
-    }
-    #mobile-menu.open { max-height: 600px; opacity: 1; }
-
-    /* ── GSAP initial states ── */
-    .gsap-fade-up { opacity: 0; transform: translateY(60px); }
-    .gsap-fade-left { opacity: 0; transform: translateX(-60px); }
-    .gsap-fade-right { opacity: 0; transform: translateX(60px); }
-    .gsap-scale { opacity: 0; transform: scale(0.8); }
-
-    /* ── Floating particles ── */
-    .particle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(249,115,22,.6);
-      pointer-events: none;
+    .tech-tag {
+      transition: all 0.3s ease;
     }
 
-    /* ── Glitch text ── */
-    .glitch {
-      position: relative;
-    }
-    .glitch::before, .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
+    .tech-tag:hover {
+      background: #f97316;
+      color: white;
+      transform: translateY(-2px);
     }
 
-    /* ── Progress bar ── */
-    .progress-bar {
-      height: 3px;
-      background: linear-gradient(90deg, #f97316, #7d4a28);
-      position: fixed;
-      top: 0; left: 0;
-      z-index: 9999;
-      transform-origin: left;
-      transform: scaleX(0);
+    .stat-num {
+      font-variant-numeric: tabular-nums;
     }
 
-    /* ── Section reveal line ── */
-    .reveal-line {
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #f97316, transparent);
-      display: block;
-    }
-
-    /* ── Number counter ── */
-    .stat-num { font-variant-numeric: tabular-nums; }
-
-    /* ── Magnetic btn ── */
-    .magnetic { display: inline-block; transition: transform .2s ease; }
-
-    /* ── Input focus ── */
-    input:focus, textarea:focus, select:focus {
+    input:focus,
+    textarea:focus,
+    select:focus {
       outline: none;
       border-color: #f97316;
-      box-shadow: 0 0 0 3px rgba(249,115,22,.15);
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);
     }
 
-    /* ── Horizontal scroll section ── */
-    .h-scroll-container {
+    #mobile-menu {
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      max-height: 0;
       overflow: hidden;
-      position: relative;
-    }
-    .h-scroll-track {
-      display: flex;
-      gap: 1.5rem;
-      will-change: transform;
+      opacity: 0;
     }
 
-    /* ── 3D Floating Card ── */
-    @keyframes float3d {
-      0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
-      25% { transform: translateY(-15px) rotateX(3deg) rotateY(-3deg); }
-      75% { transform: translateY(-8px) rotateX(-2deg) rotateY(2deg); }
+    #mobile-menu.open {
+      max-height: 600px;
+      opacity: 1;
     }
-    .float-3d { animation: float3d 6s ease-in-out infinite; }
 
-    /* ── Shine effect ── */
-    .shine {
-      position: relative;
-      overflow: hidden;
-    }
-    .shine::after {
-      content: '';
+    .particle-dot {
       position: absolute;
-      top: -50%; left: -75%;
-      width: 50%; height: 200%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-      transform: skewX(-20deg);
-      transition: left .6s ease;
-    }
-    .shine:hover::after { left: 125%; }
-
-    /* ── Marquee ── */
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .marquee-track {
-      display: flex;
-      animation: marquee 20s linear infinite;
-      width: max-content;
-    }
-    .marquee-track:hover { animation-play-state: paused; }
-
-    /* scrollbar hidden for marquee */
-    .marquee-wrapper { overflow: hidden; }
-
-    /* ── Split char animation ── */
-    .char {
-      display: inline-block;
+      border-radius: 50%;
+      background: #f97316;
     }
 
-    /* ── Banner ── */
-    #top-banner { position: fixed; top: 0; right: 0; left: 0; z-index: 60; }
+    @keyframes slideText {
+      0% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
 
-    /* ── Animated underline ── */
-    .animated-underline {
-      position: relative;
-      display: inline-block;
+      10% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      40% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
     }
-    .animated-underline svg {
+
+    .banner-slide {
+      animation: slideText 12s infinite;
       position: absolute;
-      bottom: -5px;
-      right: 0;
       width: 100%;
+      text-align: center;
     }
-
-    /* ── Noise texture overlay ── */
-    .noise::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 1;
-      opacity: .03;
-    }
-
-    /* ── Morphing bg ── */
-    @keyframes morph {
-      0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-      50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-    }
-    .morph { animation: morph 8s ease-in-out infinite; }
-
-    /* ── Tilt card perspective ── */
-    .tilt-wrapper { perspective: 1000px; }
   </style>
 </head>
 
 <body>
-  <!-- Progress Bar -->
-  <div class="progress-bar" id="progress-bar"></div>
+  <div id="top-banner"
+    class="fixed top-0 right-0 left-0 z-[60] bg-gradient-to-l from-orange-600 to-orange-500 text-white text-sm font-bold shadow-lg">
 
-  <!-- Custom Cursor -->
-  <div id="cursor"></div>
-  <div id="cursor-follower"></div>
-
-  <!-- ====== TOP BANNER ====== -->
-  <div id="top-banner" class="bg-gradient-to-l from-orange-600 to-orange-500 text-white text-sm font-bold shadow-lg">
     <div class="max-w-7xl mx-auto px-4 py-2 relative flex items-center">
+
+      <!-- CTA (شمال) -->
       <div class="absolute left-4">
         <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-          class="magnetic bg-white text-orange-600 px-4 py-1.5 rounded-xl font-black text-xs hover:bg-orange-100 transition shine">
+          class="bg-white text-orange-600 px-4 py-1.5 rounded-xl font-black text-xs hover:bg-orange-100 transition">
           اطلب الآن
         </a>
       </div>
+
+      <!-- Text (في النص) -->
       <div class="w-full text-center overflow-hidden h-6 flex items-center justify-center">
         <span id="banner-text" class="transition-all duration-500 opacity-100 translate-y-0">
           استلم موقعك الآن بـ 300 ريال سعودي 🔥
         </span>
       </div>
+
     </div>
   </div>
 
+
+
+  <script>
+    const texts = [
+      "🔥 استلم موقعك الآن بـ 300 ريال سعودي",
+      "🚀 موقع كامل خلال 3 أيام فقط",
+      "💻 تصميم + برمجة + استضافة",
+      "🎯 مناسب للشركات والمتاجر",
+      "⏳ عرض محدود لفترة قصيرة"
+    ];
+
+    let index = 0;
+    const el = document.getElementById("banner-text");
+
+    setInterval(() => {
+
+      // يطلع لفوق ويختفي
+      el.classList.remove("translate-y-0", "opacity-100");
+      el.classList.add("-translate-y-6", "opacity-0");
+
+      setTimeout(() => {
+        // تغيير النص
+        index = (index + 1) % texts.length;
+        el.innerText = texts[index];
+
+        // يرجع من تحت
+        el.classList.remove("-translate-y-6", "opacity-0");
+        el.classList.add("translate-y-6");
+
+        setTimeout(() => {
+          el.classList.remove("translate-y-6");
+          el.classList.add("translate-y-0", "opacity-100");
+        }, 50);
+
+      }, 400);
+
+    }, 2500);
+  </script>
+
+
   <!-- ====== NAVBAR ====== -->
-  <nav id="navbar" class="fixed top-[40px] right-0 left-0 z-50 bg-white/95 backdrop-blur-xl border-b border-orange-100/60 transition-all duration-300">
+  <nav id="navbar"
+    class="fixed top-[40px] right-0 left-0 z-50 bg-white/95 backdrop-blur-xl border-b border-orange-100/60 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between py-3.5">
-        <a href="#home" class="flex items-center gap-3 group flex-shrink-0" id="logo">
+        <a href="#home" class="flex items-center gap-3 group flex-shrink-0">
+
           <div>
             <span class="font-display font-black text-xl text-stone-900 leading-none block">الراية</span>
             <span class="text-xs text-orange-500 font-bold leading-none">للبرمجة والتصميم</span>
           </div>
         </a>
+
         <ul class="hidden lg:flex items-center gap-7">
-          <li><a href="#home" class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">الرئيسية</a></li>
-          <li><a href="#about" class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">من نحن</a></li>
-          <li><a href="#services" class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">خدماتنا</a></li>
-          <li><a href="#portfolio" class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">أعمالنا</a></li>
-          <li><a href="#pricing" class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">الأسعار</a></li>
-          <li><a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank" class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">تواصل معنا</a></li>
+          <li><a href="#home"
+              class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">الرئيسية</a>
+          </li>
+          <li><a href="#about"
+              class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">من نحن</a></li>
+          <li><a href="#services"
+              class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">خدماتنا</a></li>
+          <li><a href="#portfolio"
+              class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">أعمالنا</a></li>
+          <li><a href="#pricing"
+              class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">الأسعار</a></li>
+          <li><a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="nav-link text-sm font-bold text-stone-700 hover:text-orange-600 transition-colors">تواصل معنا</a>
+          </li>
         </ul>
+
         <div class="hidden lg:flex items-center gap-3">
           <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-            class="magnetic shine group relative overflow-hidden bg-gradient-to-l from-orange-600 to-orange-500 text-white text-sm font-black px-6 py-3 rounded-2xl shadow-lg shadow-orange-200 hover:shadow-orange-300 hover:-translate-y-0.5 transition-all">
+            class="group relative overflow-hidden bg-gradient-to-l from-orange-600 to-orange-500 text-white text-sm font-black px-6 py-3 rounded-2xl shadow-lg shadow-orange-200 hover:shadow-orange-300 hover:-translate-y-0.5 transition-all">
             ابدأ مشروعك ←
           </a>
         </div>
+
         <button id="menu-btn" class="lg:hidden p-2.5 rounded-xl text-stone-600 hover:bg-orange-50 transition-colors">
           <i id="menu-icon" class="fa fa-bars text-xl"></i>
         </button>
@@ -391,268 +392,273 @@
     </div>
     <div id="mobile-menu" class="lg:hidden bg-white border-t border-orange-100">
       <div class="px-4 py-5 space-y-1">
-        <a href="#home" class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">الرئيسية</a>
-        <a href="#about" class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">من نحن</a>
-        <a href="#services" class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">خدماتنا</a>
-        <a href="#portfolio" class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">أعمالنا</a>
-        <a href="#pricing" class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">الأسعار</a>
-        <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank" class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">تواصل معنا</a>
+        <a href="#home"
+          class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">الرئيسية</a>
+        <a href="#about"
+          class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">من
+          نحن</a>
+        <a href="#services"
+          class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">خدماتنا</a>
+        <a href="#portfolio"
+          class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">أعمالنا</a>
+        <a href="#pricing"
+          class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">الأسعار</a>
         <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-          class="mobile-link block mt-3 bg-gradient-to-l from-orange-600 to-orange-500 text-white text-center px-4 py-3.5 rounded-2xl font-black shadow-lg shadow-orange-200">ابدأ مشروعك ←</a>
+          class="mobile-link block px-4 py-3 rounded-2xl text-stone-700 hover:bg-orange-50 hover:text-orange-600 font-bold transition-colors">تواصل
+          معنا</a>
+        <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+          class="mobile-link block mt-3 bg-gradient-to-l from-orange-600 to-orange-500 text-white text-center px-4 py-3.5 rounded-2xl font-black shadow-lg shadow-orange-200">ابدأ
+          مشروعك ←</a>
       </div>
     </div>
   </nav>
 
+
   <!-- ====== HERO ====== -->
   <section id="home" class="relative min-h-screen flex items-center overflow-hidden hero-grid pt-20">
-    <!-- Three.js Canvas -->
-    <canvas id="hero-canvas"></canvas>
-
-    <!-- Floating particles -->
-    <div id="particles-container" class="absolute inset-0 pointer-events-none z-[1]"></div>
-
-    <div class="absolute inset-0 z-[2]"
+    <div class="absolute inset-0"
       style="background:radial-gradient(circle at 20% 20%,rgba(249,115,22,.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(120,53,15,.08) 0%,transparent 50%);">
     </div>
+    <div
+      class="absolute top-16 left-[-150px] w-[550px] h-[550px] blob bg-orange-100/50 opacity-60 pointer-events-none animate-float">
+    </div>
+    <div
+      class="absolute bottom-0 right-[-100px] w-[400px] h-[400px] blob bg-amber-100/40 opacity-50 pointer-events-none animate-float2">
+    </div>
 
-    <!-- Morphing blob -->
-    <div class="absolute top-16 left-[-150px] w-[500px] h-[500px] morph bg-orange-100/60 opacity-70 pointer-events-none z-[2]"></div>
-    <div class="absolute bottom-0 right-[-100px] w-[400px] h-[400px] morph bg-amber-100/50 opacity-50 pointer-events-none z-[2]" style="animation-delay:-4s"></div>
+    <!-- Orbiting rings decoration -->
+    <div class="absolute top-1/2 right-[52%] -translate-y-1/2 pointer-events-none hidden xl:block">
+      <div class="relative w-80 h-80">
+        <div class="orbit-ring w-56 h-56 animate-spin-slow"></div>
+        <div class="orbit-ring w-80 h-80 animate-spin-slow-rev" style="border-style:dotted"></div>
+        <div
+          class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-orange-400 rounded-full shadow-lg animate-float">
+        </div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-amber-700 rounded-full animate-float2"></div>
+        <div class="absolute top-1/2 right-0 -translate-y-1/2 w-2.5 h-2.5 bg-orange-300 rounded-full animate-float3">
+        </div>
+      </div>
+    </div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 grid lg:grid-cols-2 gap-16 items-center z-10">
+    <div
+      class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 grid lg:grid-cols-2 gap-16 items-center z-10">
       <!-- Text -->
-      <div class="order-2 lg:order-1" id="hero-text">
-        <div id="hero-badge"
-          class="inline-flex items-center gap-2.5 bg-white border border-orange-200 text-orange-600 text-xs font-black px-4 py-2 rounded-full shadow-sm mb-8 opacity-0">
+      <div class="reveal order-2 lg:order-1">
+        <div
+          class="inline-flex items-center gap-2.5 bg-white border border-orange-200 text-orange-600 text-xs font-black px-4 py-2 rounded-full shadow-sm mb-8">
           <span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
           متاح لمشاريع جديدة الآن
           <span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
         </div>
 
-        <h1 id="hero-title" class="font-display font-black text-5xl sm:text-6xl lg:text-7xl leading-[1.1] text-stone-900 mb-6 overflow-hidden">
-          <span class="block overflow-hidden"><span id="line1" class="block">نبني</span></span>
-          <span class="block overflow-hidden">
-            <span id="line2" class="block animated-underline">
-              <span class="grad-text">مواقع</span>
-              <svg viewBox="0 0 200 10" fill="none"><path d="M2 7C40 2 80 1 100 3C120 5 160 8 198 4" stroke="#fb923c" stroke-width="2.5" stroke-linecap="round" id="hero-underline" stroke-dasharray="200" stroke-dashoffset="200"/></svg>
-            </span>
+        <h1 class="font-display font-black text-5xl sm:text-6xl lg:text-7xl leading-[1.1] text-stone-900 mb-6">
+          نبني
+          <span class="relative inline-block mx-2">
+            <span class="grad-text">مواقع</span>
+            <svg class="absolute -bottom-2 right-0 w-full" viewBox="0 0 200 10" fill="none">
+              <path d="M2 7C40 2 80 1 100 3C120 5 160 8 198 4" stroke="#fb923c" stroke-width="2.5"
+                stroke-linecap="round" />
+            </svg>
           </span>
-          <span class="block overflow-hidden"><span id="line3" class="block">وبرمجيات</span></span>
-          <span class="block overflow-hidden"><span id="line4" class="block text-orange-500">ذكية</span></span>
+          وبرمجيات<br />
+          <span class="text-orange-500">ذكية</span>
         </h1>
 
-        <p id="hero-desc" class="text-stone-500 text-lg leading-loose max-w-xl mb-10 opacity-0">
-          الراية للبرمجة والتصميم — نصنع منتجات رقمية استثنائية تجمع بين الجماليات المثالية والأداء القوي، لنمو حقيقي وقابل للقياس.
+        <p class="text-stone-500 text-lg leading-loose max-w-xl mb-10">
+          الراية للبرمجة والتصميم — نصنع منتجات رقمية استثنائية تجمع بين الجماليات المثالية والأداء القوي، لنمو حقيقي
+          وقابل للقياس.
         </p>
 
-        <div id="hero-btns" class="flex flex-wrap gap-4 mb-12 opacity-0">
+        <div class="flex flex-wrap gap-4 mb-12">
           <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-            class="magnetic shine group inline-flex items-center gap-3 bg-gradient-to-l from-orange-600 to-orange-500 text-white font-black px-8 py-4 rounded-2xl shadow-xl shadow-orange-200 hover:shadow-orange-300 transition-all hover:-translate-y-1">
+            class="group inline-flex items-center gap-3 bg-gradient-to-l from-orange-600 to-orange-500 text-white font-black px-8 py-4 rounded-2xl shadow-xl shadow-orange-200 hover:shadow-orange-300 transition-all hover:-translate-y-1">
             ابدأ مشروعك <i class="fa fa-arrow-left text-sm group-hover:-translate-x-1 transition-transform"></i>
           </a>
           <a href="#portfolio"
-            class="magnetic inline-flex items-center gap-3 text-stone-700 font-black border-2 border-orange-200 hover:border-orange-500 hover:text-orange-600 hover:bg-orange-50 px-8 py-4 rounded-2xl transition-all hover:-translate-y-1">
-            <i class="fa fa-eye text-orange-400"></i> شاهد أعمالنا
+            class="inline-flex items-center gap-3 text-stone-700 font-black border-2 border-orange-200 hover:border-orange-500 hover:text-orange-600 hover:bg-orange-50 px-8 py-4 rounded-2xl transition-all hover:-translate-y-1">
+            <i class="fa fa-eye text-orange-400"></i>
+            شاهد أعمالنا
           </a>
         </div>
 
-        <div id="hero-stats" class="flex items-center gap-8 pt-8 border-t border-orange-100 opacity-0">
+        <div class="flex items-center gap-8 pt-8 border-t border-orange-100">
           <div class="text-center">
-            <div class="font-display text-3xl font-black text-stone-900 stat-count" data-target="300">0</div>
+            <div class="font-display text-3xl font-black text-stone-900">+300</div>
             <div class="text-xs text-stone-400 font-bold mt-0.5">مشروع منجز</div>
           </div>
           <div class="w-px h-12 bg-orange-100"></div>
           <div class="text-center">
-            <div class="font-display text-3xl font-black text-stone-900 stat-count" data-target="300">0</div>
+            <div class="font-display text-3xl font-black text-stone-900">+300</div>
             <div class="text-xs text-stone-400 font-bold mt-0.5">عميل سعيد</div>
           </div>
           <div class="w-px h-12 bg-orange-100"></div>
           <div class="text-center">
-            <div class="font-display text-3xl font-black text-stone-900 stat-count" data-target="9">0</div>
+            <div class="font-display text-3xl font-black text-stone-900">+9</div>
             <div class="text-xs text-stone-400 font-bold mt-0.5">سنوات خبرة</div>
           </div>
         </div>
       </div>
 
-      <!-- 3D Visual Card -->
-      <div class="relative hidden lg:flex justify-center items-center order-1 lg:order-2" id="hero-card-wrapper">
-        <div class="tilt-wrapper" id="tilt-container">
-          <div id="hero-card" class="relative w-full max-w-lg float-3d opacity-0" style="transform-style:preserve-3d;">
-            <div class="bg-white rounded-3xl shadow-2xl shadow-orange-200/60 p-8 border border-orange-100 relative overflow-hidden" style="transform-style:preserve-3d;">
-              <!-- Glass inner glow -->
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-transparent rounded-3xl pointer-events-none"></div>
-
-              <div class="flex items-center gap-3 mb-6 pb-5 border-b border-orange-50 relative z-10">
-                <div class="flex gap-1.5">
-                  <div class="w-3 h-3 bg-red-400 rounded-full"></div>
-                  <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                  <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                </div>
-                <div class="flex-1 bg-orange-50 rounded-xl h-7 text-xs text-orange-300 flex items-center px-3">alrayaa.dev/مشروع-جديد</div>
+      <!-- Visual -->
+      <div class="relative hidden lg:flex justify-center items-center reveal-right order-1 lg:order-2">
+        <div class="relative w-full max-w-lg">
+          <div
+            class="bg-white rounded-3xl shadow-2xl shadow-orange-200/60 p-8 border border-orange-100 animate-float z-10 relative">
+            <div class="flex items-center gap-3 mb-6 pb-5 border-b border-orange-50">
+              <div class="flex gap-1.5">
+                <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
               </div>
-
-              <div class="space-y-3 mb-6 relative z-10">
-                <div class="flex items-center gap-3">
-                  <span class="text-xs text-stone-400 w-16 shrink-0 text-left">الأداء</span>
-                  <div class="flex-1 bg-orange-50 rounded-full h-2.5">
-                    <div class="progress-fill bg-gradient-to-l from-orange-500 to-orange-400 h-2.5 rounded-full" data-width="96%" style="width:0%"></div>
-                  </div>
-                  <span class="text-xs font-black text-orange-600">96%</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="text-xs text-stone-400 w-16 shrink-0 text-left">التصميم</span>
-                  <div class="flex-1 bg-orange-50 rounded-full h-2.5">
-                    <div class="progress-fill bg-gradient-to-l from-amber-700 to-amber-600 h-2.5 rounded-full" data-width="98%" style="width:0%"></div>
-                  </div>
-                  <span class="text-xs font-black text-amber-700">98%</span>
-                </div>
-                <div class="flex items-center gap-3">
-                  <span class="text-xs text-stone-400 w-16 shrink-0 text-left">الأمان</span>
-                  <div class="flex-1 bg-orange-50 rounded-full h-2.5">
-                    <div class="progress-fill bg-gradient-to-l from-green-500 to-green-400 h-2.5 rounded-full" data-width="100%" style="width:0%"></div>
-                  </div>
-                  <span class="text-xs font-black text-green-600">100%</span>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-3 gap-3 mb-5 relative z-10">
-                <div class="bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl h-20 flex flex-col items-center justify-center text-white hover:scale-105 transition-transform cursor-default" style="transform:translateZ(15px);">
-                  <i class="fa fa-code text-xl mb-1"></i><span class="text-xs font-black">برمجة</span>
-                </div>
-                <div class="bg-gradient-to-br from-amber-700 to-stone-700 rounded-2xl h-20 flex flex-col items-center justify-center text-white hover:scale-105 transition-transform cursor-default" style="transform:translateZ(20px);">
-                  <i class="fa fa-mobile-alt text-xl mb-1"></i><span class="text-xs font-black">تطبيق</span>
-                </div>
-                <div class="bg-orange-50 border-2 border-orange-200 rounded-2xl h-20 flex flex-col items-center justify-center text-orange-600 hover:scale-105 transition-transform cursor-default" style="transform:translateZ(10px);">
-                  <i class="fa fa-pen-nib text-xl mb-1"></i><span class="text-xs font-black">تصميم</span>
-                </div>
-              </div>
-
-              <div class="flex flex-wrap gap-2 relative z-10">
-                <span class="tech-tag text-xs bg-orange-50 text-orange-600 border border-orange-200 px-2.5 py-1 rounded-full font-bold cursor-default">React</span>
-                <span class="tech-tag text-xs bg-orange-50 text-orange-600 border border-orange-200 px-2.5 py-1 rounded-full font-bold cursor-default">Node.js</span>
-                <span class="tech-tag text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full font-bold cursor-default">Flutter</span>
-                <span class="tech-tag text-xs bg-orange-50 text-orange-600 border border-orange-200 px-2.5 py-1 rounded-full font-bold cursor-default">Python</span>
-              </div>
+              <div class="flex-1 bg-orange-50 rounded-xl h-7 text-xs text-orange-300 flex items-center px-3">
+                alrayaa.dev/مشروع-جديد</div>
             </div>
-
-            <!-- Floating badges -->
-            <div id="badge1" class="absolute -top-8 -left-10 bg-white rounded-2xl shadow-xl border border-orange-100 px-5 py-3.5 z-20 opacity-0" style="transform:translateZ(40px);">
+            <div class="space-y-3 mb-6">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center"><i class="fa fa-check text-green-600"></i></div>
-                <div>
-                  <div class="font-display font-black text-sm text-stone-900">تم التسليم!</div>
-                  <div class="text-xs text-stone-400">في الوقت المحدد</div>
+                <span class="text-xs text-stone-400 w-16 shrink-0 text-left">الأداء</span>
+                <div class="flex-1 bg-orange-50 rounded-full h-2.5">
+                  <div class="bg-gradient-to-l from-orange-500 to-orange-400 h-2.5 rounded-full animate-pulse-slow"
+                    style="width:96%"></div>
                 </div>
+                <span class="text-xs font-black text-orange-600">96%</span>
               </div>
-            </div>
-
-            <div id="badge2" class="absolute -bottom-8 -right-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-xl px-5 py-3.5 z-20 opacity-0" style="transform:translateZ(50px);">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><i class="fa fa-star text-white"></i></div>
-                <div>
-                  <div class="font-display font-black text-sm text-white">5.0 تقييم</div>
-                  <div class="text-xs text-orange-200">من +150 عميل</div>
+                <span class="text-xs text-stone-400 w-16 shrink-0 text-left">التصميم</span>
+                <div class="flex-1 bg-orange-50 rounded-full h-2.5">
+                  <div class="bg-gradient-to-l from-amber-700 to-amber-600 h-2.5 rounded-full" style="width:98%"></div>
                 </div>
+                <span class="text-xs font-black text-amber-700">98%</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-xs text-stone-400 w-16 shrink-0 text-left">الأمان</span>
+                <div class="flex-1 bg-orange-50 rounded-full h-2.5">
+                  <div class="bg-gradient-to-l from-green-500 to-green-400 h-2.5 rounded-full" style="width:100%"></div>
+                </div>
+                <span class="text-xs font-black text-green-600">100%</span>
               </div>
             </div>
-
-            <div class="absolute top-1/2 -right-16 w-12 h-12 hex bg-orange-100 opacity-60" id="hex1"></div>
-            <div class="absolute -bottom-4 left-20 w-8 h-8 hex bg-amber-200 opacity-40" id="hex2"></div>
+            <div class="grid grid-cols-3 gap-3 mb-5">
+              <div
+                class="bg-gradient-to-br from-orange-500 to-orange-700 rounded-2xl h-20 flex flex-col items-center justify-center text-white">
+                <i class="fa fa-code text-xl mb-1"></i>
+                <span class="text-xs font-black">برمجة</span>
+              </div>
+              <div
+                class="bg-gradient-to-br from-amber-700 to-stone-700 rounded-2xl h-20 flex flex-col items-center justify-center text-white">
+                <i class="fa fa-mobile-alt text-xl mb-1"></i>
+                <span class="text-xs font-black">تطبيق</span>
+              </div>
+              <div
+                class="bg-orange-50 border-2 border-orange-200 rounded-2xl h-20 flex flex-col items-center justify-center text-orange-600">
+                <i class="fa fa-pen-nib text-xl mb-1"></i>
+                <span class="text-xs font-black">تصميم</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="tech-tag text-xs bg-orange-50 text-orange-600 border border-orange-200 px-2.5 py-1 rounded-full font-bold cursor-default">React</span>
+              <span
+                class="tech-tag text-xs bg-orange-50 text-orange-600 border border-orange-200 px-2.5 py-1 rounded-full font-bold cursor-default">Node.js</span>
+              <span
+                class="tech-tag text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full font-bold cursor-default">Flutter</span>
+              <span
+                class="tech-tag text-xs bg-orange-50 text-orange-600 border border-orange-200 px-2.5 py-1 rounded-full font-bold cursor-default">Python</span>
+            </div>
           </div>
+
+          <div
+            class="absolute -top-8 -left-10 bg-white rounded-2xl shadow-xl border border-orange-100 px-5 py-3.5 animate-float2 z-20">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center"><i
+                  class="fa fa-check text-green-600"></i></div>
+              <div>
+                <div class="font-display font-black text-sm text-stone-900">تم التسليم!</div>
+                <div class="text-xs text-stone-400">في الوقت المحدد</div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="absolute -bottom-8 -right-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-xl px-5 py-3.5 animate-float3 z-20">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><i
+                  class="fa fa-star text-white"></i></div>
+              <div>
+                <div class="font-display font-black text-sm text-white">5.0 تقييم</div>
+                <div class="text-xs text-orange-200">من +150 عميل</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute top-1/2 -right-16 w-12 h-12 hex bg-orange-100 animate-wiggle opacity-60"></div>
+          <div class="absolute -bottom-4 left-20 w-8 h-8 hex bg-amber-200 animate-bounce-slow opacity-40"></div>
         </div>
       </div>
     </div>
 
-    <!-- Scroll indicator -->
-    <div id="scroll-indicator" class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0">
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-slow">
       <span class="text-xs text-stone-400 font-bold">تمرر للأسفل</span>
       <div class="w-6 h-10 border-2 border-orange-300 rounded-full flex items-start justify-center pt-1.5">
-        <div class="w-1.5 h-2.5 bg-orange-400 rounded-full" id="scroll-dot"></div>
+        <div class="w-1.5 h-2.5 bg-orange-400 rounded-full animate-bounce"></div>
       </div>
     </div>
   </section>
 
-  <!-- ====== MARQUEE TECH ====== -->
-  <div class="py-6 bg-white border-y border-orange-100 overflow-hidden marquee-wrapper">
-    <div class="marquee-track">
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">React</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Node.js</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Flutter</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Python</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">MongoDB</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Laravel</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">AWS</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Firebase</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <!-- Duplicate for seamless loop -->
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">React</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Node.js</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Flutter</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Python</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">MongoDB</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Laravel</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">AWS</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-      <span class="mx-8 text-stone-300 font-black text-sm uppercase tracking-widest">Firebase</span>
-      <span class="mx-8 text-orange-400 font-black text-sm">✦</span>
-    </div>
-  </div>
 
   <!-- ====== ABOUT ====== -->
   <section id="about" class="py-28 bg-white relative overflow-hidden">
-    <div class="absolute top-0 left-0 w-72 h-72 bg-orange-50 rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-amber-50/60 rounded-full translate-x-1/3 translate-y-1/3 pointer-events-none"></div>
+    <div
+      class="absolute top-0 left-0 w-72 h-72 bg-orange-50 rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+    </div>
+    <div
+      class="absolute bottom-0 right-0 w-96 h-96 bg-amber-50/60 rounded-full translate-x-1/3 translate-y-1/3 pointer-events-none">
+    </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid lg:grid-cols-2 gap-20 items-center">
-        <div class="gsap-fade-left order-2 lg:order-1">
-          <div class="relative tilt-wrapper">
-            <div class="relative bg-gradient-to-br from-orange-500 via-orange-600 to-amber-800 rounded-3xl h-96 overflow-hidden" id="about-card">
-              <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1.5px, transparent 1.5px); background-size: 20px 20px;"></div>
+        <div class="reveal-left order-2 lg:order-1">
+          <div class="relative">
+            <div
+              class="relative bg-gradient-to-br from-orange-500 via-orange-600 to-amber-800 rounded-3xl h-96 overflow-hidden">
+              <div class="absolute inset-0 opacity-10"
+                style="background-image: radial-gradient(circle, white 1.5px, transparent 1.5px); background-size: 20px 20px;">
+              </div>
               <div class="absolute inset-0 flex items-center justify-center">
                 <div class="text-center text-white">
                   <div class="relative inline-block mb-6">
-                    <i class="fa fa-laptop-code text-8xl opacity-90" id="about-icon"></i>
+                    <i class="fa fa-laptop-code text-8xl opacity-90"></i>
                     <div class="absolute -top-3 -right-3 w-6 h-6 bg-white/30 rounded-full animate-ping"></div>
                   </div>
                   <div class="font-display text-2xl font-black">نبني تجارب رقمية استثنائية</div>
                   <div class="text-orange-200 text-sm mt-2">منذ عام 2016</div>
                 </div>
               </div>
-              <div class="absolute top-6 right-6 w-16 h-16 hex bg-white/10 flex items-center justify-center" id="about-hex1">
+              <div class="absolute top-6 right-6 w-16 h-16 hex bg-white/10 flex items-center justify-center">
                 <i class="fa fa-code text-white text-xl"></i>
               </div>
-              <div class="absolute bottom-6 left-6 w-12 h-12 hex bg-white/10 flex items-center justify-center" id="about-hex2">
+              <div class="absolute bottom-6 left-6 w-12 h-12 hex bg-white/10 flex items-center justify-center">
                 <i class="fa fa-mobile-alt text-white text-lg"></i>
               </div>
             </div>
-            <div class="absolute -bottom-10 -left-10 bg-white rounded-3xl shadow-2xl shadow-orange-100 p-6 border border-orange-50 z-10 gsap-scale">
+            <div
+              class="absolute -bottom-10 -left-10 bg-white rounded-3xl shadow-2xl shadow-orange-100 p-6 border border-orange-50 z-10">
               <div class="font-display text-5xl font-black grad-text mb-1">8+</div>
               <div class="text-sm text-stone-500 font-bold">سنوات من البناء الاحترافي</div>
               <div class="flex gap-1 mt-2">
                 <div class="w-2 h-2 bg-orange-500 rounded-full"></div>
-                <div class="w-2 h-2 bg-orange-400 rounded-full"></div>
-                <div class="w-2 h-2 bg-orange-300 rounded-full"></div>
+                <div class="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
+                <div class="w-2 h-2 bg-orange-300 rounded-full animate-pulse" style="animation-delay:.2s"></div>
               </div>
+            </div>
+            <div
+              class="absolute -top-6 -right-6 w-20 h-20 bg-orange-100 rounded-3xl rotate-12 opacity-70 animate-wiggle">
             </div>
           </div>
         </div>
 
-        <div class="gsap-fade-right order-1 lg:order-2">
-          <span class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
+        <div class="reveal-right order-1 lg:order-2">
+          <span
+            class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
             <i class="fa fa-info-circle"></i> من نحن
           </span>
           <h2 class="font-display text-4xl lg:text-5xl font-black text-stone-900 leading-tight mb-6">
@@ -660,33 +666,39 @@
             <span class="grad-text">بالجودة والنتائج</span>
           </h2>
           <p class="text-stone-500 leading-loose mb-5">
-            الراية للبرمجة والتصميم وكالة رقمية متكاملة متخصصة في تطوير الويب الحديث، هندسة البرمجيات، وتصميم واجهات المستخدم.
+            الراية للبرمجة والتصميم وكالة رقمية متكاملة متخصصة في تطوير الويب الحديث، هندسة البرمجيات، وتصميم واجهات
+            المستخدم. نتشارك مع الشركات الناشئة والمتوسطة والكبرى لتحويل أفكارهم إلى واقع رقمي قوي.
           </p>
           <p class="text-stone-500 leading-loose mb-8">
-            يجمع فريقنا متعدد التخصصات بين التفكير الهندسي الحاد والحساسية التصميمية المصقولة، لنقدم منتجات جميلة وعالية الأداء وقابلة للتوسع.
+            يجمع فريقنا متعدد التخصصات بين التفكير الهندسي الحاد والحساسية التصميمية المصقولة، لنقدم منتجات جميلة وعالية
+            الأداء وقابلة للتوسع وصُممت لتدوم.
           </p>
           <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="bg-orange-50 border border-orange-100 rounded-2xl p-5 card-glow gsap-scale">
-              <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-3"><i class="fa fa-bullseye text-orange-600"></i></div>
+            <div class="bg-orange-50 border border-orange-100 rounded-2xl p-5 card-glow">
+              <div class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-3"><i
+                  class="fa fa-bullseye text-orange-600"></i></div>
               <div class="font-display font-black text-stone-900 mb-1">رسالتنا</div>
-              <div class="text-sm text-stone-500 leading-relaxed">تقديم حلول رقمية عالمية المستوى تدفع النمو الحقيقي للأعمال.</div>
+              <div class="text-sm text-stone-500 leading-relaxed">تقديم حلول رقمية عالمية المستوى تدفع النمو الحقيقي
+                للأعمال.</div>
             </div>
-            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 card-glow gsap-scale">
-              <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center mb-3"><i class="fa fa-eye text-amber-700"></i></div>
+            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-5 card-glow">
+              <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center mb-3"><i
+                  class="fa fa-eye text-amber-700"></i></div>
               <div class="font-display font-black text-stone-900 mb-1">رؤيتنا</div>
-              <div class="text-sm text-stone-500 leading-relaxed">أن نكون الشريك الرقمي الأكثر ثقة للشركات الطموحة حول العالم.</div>
+              <div class="text-sm text-stone-500 leading-relaxed">أن نكون الشريك الرقمي الأكثر ثقة للشركات الطموحة حول
+                العالم.</div>
             </div>
           </div>
           <div class="grid grid-cols-3 gap-3">
-            <div class="text-center p-4 rounded-2xl bg-white border border-orange-100 shadow-sm card-glow gsap-scale">
+            <div class="text-center p-4 rounded-2xl bg-white border border-orange-100 shadow-sm card-glow">
               <i class="fa fa-users text-orange-500 text-xl mb-2 block"></i>
               <div class="text-xs font-display font-black text-stone-800">فريق محترف</div>
             </div>
-            <div class="text-center p-4 rounded-2xl bg-white border border-orange-100 shadow-sm card-glow gsap-scale">
+            <div class="text-center p-4 rounded-2xl bg-white border border-orange-100 shadow-sm card-glow">
               <i class="fa fa-microchip text-orange-500 text-xl mb-2 block"></i>
               <div class="text-xs font-display font-black text-stone-800">تقنيات حديثة</div>
             </div>
-            <div class="text-center p-4 rounded-2xl bg-white border border-orange-100 shadow-sm card-glow gsap-scale">
+            <div class="text-center p-4 rounded-2xl bg-white border border-orange-100 shadow-sm card-glow">
               <i class="fa fa-rocket text-orange-500 text-xl mb-2 block"></i>
               <div class="text-xs font-display font-black text-stone-800">تسليم سريع</div>
             </div>
@@ -696,11 +708,16 @@
     </div>
   </section>
 
+
   <!-- ====== SERVICES ====== -->
   <section id="services" class="py-28 relative overflow-hidden bg-orange-50/50">
+    <div class="absolute inset-0 pointer-events-none"
+      style="background:radial-gradient(circle at 90% 10%,rgba(249,115,22,.07) 0%,transparent 50%),radial-gradient(circle at 10% 90%,rgba(120,53,15,.05) 0%,transparent 50%);">
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
-        <span class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-white px-4 py-2 rounded-full border border-orange-200 shadow-sm">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <span
+          class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-white px-4 py-2 rounded-full border border-orange-200 shadow-sm">
           <i class="fa fa-cogs"></i> ما الذي نفعله
         </span>
         <h2 class="font-display text-4xl lg:text-5xl font-black text-stone-900 leading-tight mb-4">
@@ -709,89 +726,207 @@
         <p class="text-stone-500">من الفكرة إلى الإطلاق، نقدم خدمات رقمية متكاملة مصممة خصيصاً لأهدافك.</p>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5" id="services-grid">
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-globe"></i></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-globe"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">تطوير المواقع</h3>
           <p class="text-stone-500 text-sm leading-relaxed">مواقع سريعة ومتجاوبة مبنية بأحدث الأطر والتقنيات.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a href="service.html"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-layer-group"></i></div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-layer-group"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">تطبيقات الويب</h3>
           <p class="text-stone-500 text-sm leading-relaxed">تطبيقات ويب متكاملة بخلفيات قوية وواجهات بديهية.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a
+              href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-mobile-alt"></i></div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-mobile-alt"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">تطبيقات الموبايل</h3>
-          <p class="text-stone-500 text-sm leading-relaxed">تطبيقات iOS وAndroid أصلية ومتعددة المنصات يحبها المستخدمون.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <p class="text-stone-500 text-sm leading-relaxed">تطبيقات iOS وAndroid أصلية ومتعددة المنصات يحبها المستخدمون.
+          </p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a
+              href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
-        <div class="svc-card bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-7 shadow-xl shadow-orange-200 card-glow group cursor-default text-white gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-white/20 text-white rounded-2xl flex items-center justify-center mb-5 text-2xl"><i class="fa fa-pen-nib"></i></div>
+        <div
+          class="svc-card bg-gradient-to-br from-orange-500 to-orange-600 rounded-3xl p-7 shadow-xl shadow-orange-200 card-glow group cursor-default text-white">
+          <div
+            class="svc-icon w-14 h-14 bg-white/20 text-white rounded-2xl flex items-center justify-center mb-5 text-2xl">
+            <i class="fa fa-pen-nib"></i>
+          </div>
           <h3 class="font-display font-black text-white mb-2">تصميم UI/UX</h3>
           <p class="text-orange-100 text-sm leading-relaxed">واجهات بحثية جميلة تحول وتُسعد المستخدمين في كل خطوة.</p>
-          <div class="mt-4 pt-4 border-t border-orange-400/40"><a href="#" class="text-xs font-black text-white/90 hover:text-white transition-colors">عرض التفاصيل ←</a></div>
+          <div class="mt-4 pt-4 border-t border-orange-400/40"><a href="service.html"
+              class="text-xs font-black text-white/90 hover:text-white transition-colors">عرض التفاصيل ←</a></div>
         </div>
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-paint-brush"></i></div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-paint-brush"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">التصميم الجرافيكي</h3>
           <p class="text-stone-500 text-sm leading-relaxed">شعارات وهوية بصرية وأنظمة علامة تجارية لا تُنسى.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a
+              href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-search"></i></div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-search"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">تحسين محركات البحث</h3>
-          <p class="text-stone-500 text-sm leading-relaxed">استراتيجيات SEO مدعومة بالبيانات لترتيب أعلى وحركة مرور أكثر.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <p class="text-stone-500 text-sm leading-relaxed">استراتيجيات SEO مدعومة بالبيانات لترتيب أعلى وحركة مرور
+            أكثر.</p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a
+              href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-shopping-cart"></i></div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-shopping-cart"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">التجارة الإلكترونية</h3>
-          <p class="text-stone-500 text-sm leading-relaxed">متاجر إلكترونية عالية التحويل بتدفق دفع سلس ومدفوعات آمنة.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <p class="text-stone-500 text-sm leading-relaxed">متاجر إلكترونية عالية التحويل بتدفق دفع سلس ومدفوعات آمنة.
+          </p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a
+              href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
-        <div class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default gsap-scale">
-          <div class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm"><i class="fa fa-tools"></i></div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-tools"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 mb-2">صيانة المواقع</h3>
           <p class="text-stone-500 text-sm leading-relaxed">دعم مستمر وتحديثات ومراقبة لإبقاء موقعك آمناً وسريعاً.</p>
-          <div class="mt-4 pt-4 border-t border-orange-50"><a href="#" class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a></div>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a
+              href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
+        </div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-hashtag"></i>
+          </div>
+          <h3 class="font-display font-black text-stone-900 mb-2">إدارة حسابات التواصل</h3>
+          <p class="text-stone-500 text-sm leading-relaxed">إدارة احترافية لحسابات التواصل الاجتماعي لزيادة التفاعل.</p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a href="service.html"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
+        </div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-ad"></i>
+          </div>
+          <h3 class="font-display font-black text-stone-900 mb-2">التسويق الرقمي</h3>
+          <p class="text-stone-500 text-sm leading-relaxed">حملات تسويقية مستهدفة لزيادة المبيعات والانتشار.</p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a href="service.html"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
+        </div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-amber-50 text-amber-700 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-pen-fancy"></i>
+          </div>
+          <h3 class="font-display font-black text-stone-900 mb-2">كتابة المحتوى</h3>
+          <p class="text-stone-500 text-sm leading-relaxed">صناعة محتوى إبداعي يروي قصة علامتك التجارية.</p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a href="service.html"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
+        </div>
+        <div
+          class="svc-card bg-white rounded-3xl p-7 shadow-sm border border-orange-100 card-glow group cursor-default">
+          <div
+            class="svc-icon w-14 h-14 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-5 text-2xl shadow-sm">
+            <i class="fa fa-cloud"></i>
+          </div>
+          <h3 class="font-display font-black text-stone-900 mb-2">استضافة سحابية</h3>
+          <p class="text-stone-500 text-sm leading-relaxed">استضافة سريعة وآمنة تضمن استقرار موقعك على الدوام.</p>
+          <div class="mt-4 pt-4 border-t border-orange-50"><a href="service.html"
+              class="text-xs font-black text-orange-500 hover:text-orange-700 transition-colors">عرض التفاصيل ←</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+
   <!-- ====== WHY US ====== -->
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-14 gsap-fade-up">
-        <span class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
+      <div class="text-center max-w-2xl mx-auto mb-14 reveal">
+        <span
+          class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
           <i class="fa fa-trophy"></i> لماذا الراية؟
         </span>
         <h2 class="font-display text-4xl lg:text-5xl font-black text-stone-900 leading-tight">
           المعيار الذي<br /><span class="grad-text">نضع أنفسنا به</span>
         </h2>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="why-grid">
-        <div class="bg-gradient-to-br from-orange-500 to-amber-800 text-white rounded-3xl p-7 card-glow relative overflow-hidden gsap-scale">
-          <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:20px 20px;"></div>
-          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-5 text-2xl"><i class="fa fa-code"></i></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+        <div
+          class="bg-gradient-to-br from-orange-500 to-amber-800 text-white rounded-3xl p-7 card-glow relative overflow-hidden">
+          <div class="absolute inset-0 opacity-5"
+            style="background-image:radial-gradient(circle,white 1px,transparent 1px);background-size:20px 20px;"></div>
+          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-5 text-2xl"><i
+              class="fa fa-code"></i></div>
           <h3 class="font-display font-black text-xl mb-2">كود عالي الجودة</h3>
           <p class="text-orange-100 text-sm leading-relaxed">كود نظيف وموثق وقابل للصيانة وفق أفضل معايير الصناعة.</p>
         </div>
-        <div class="bg-white border border-orange-100 rounded-3xl p-7 shadow-sm card-glow gsap-scale">
-          <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mb-5 text-2xl text-orange-600"><i class="fa fa-bolt"></i></div>
+        <div class="bg-white border border-orange-100 rounded-3xl p-7 shadow-sm card-glow">
+          <div
+            class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mb-5 text-2xl text-orange-600">
+            <i class="fa fa-bolt"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 text-xl mb-2">أداء فائق السرعة</h3>
           <p class="text-stone-500 text-sm leading-relaxed">محسَّن لمقاييس Core Web Vitals — أوقات تحميل دون ثانية.</p>
         </div>
-        <div class="bg-white border border-orange-100 rounded-3xl p-7 shadow-sm card-glow gsap-scale">
-          <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center mb-5 text-2xl text-amber-700"><i class="fa fa-shield-alt"></i></div>
+        <div class="bg-white border border-orange-100 rounded-3xl p-7 shadow-sm card-glow">
+          <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center mb-5 text-2xl text-amber-700">
+            <i class="fa fa-shield-alt"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 text-xl mb-2">أنظمة آمنة</h3>
-          <p class="text-stone-500 text-sm leading-relaxed">تطوير يضع الأمان أولاً مع التشفير والامتثال لمعايير OWASP.</p>
+          <p class="text-stone-500 text-sm leading-relaxed">تطوير يضع الأمان أولاً مع التشفير والامتثال لمعايير OWASP.
+          </p>
         </div>
-        <div class="bg-white border border-orange-100 rounded-3xl p-7 shadow-sm card-glow gsap-scale">
-          <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mb-5 text-2xl text-orange-600"><i class="fa fa-headset"></i></div>
+        <div class="bg-white border border-orange-100 rounded-3xl p-7 shadow-sm card-glow">
+          <div
+            class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center mb-5 text-2xl text-orange-600">
+            <i class="fa fa-headset"></i>
+          </div>
           <h3 class="font-display font-black text-stone-900 text-xl mb-2">دعم احترافي</h3>
           <p class="text-stone-500 text-sm leading-relaxed">مدراء حسابات مخصصون ودعم متجاوب متاح عند الحاجة.</p>
         </div>
@@ -799,39 +934,41 @@
     </div>
   </section>
 
+
   <!-- ====== STATS ====== -->
-  <section class="py-20 bg-gradient-to-l from-orange-600 via-orange-500 to-amber-700 relative overflow-hidden" id="stats-section">
-    <div class="absolute inset-0" style="background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);background-size:25px 25px;"></div>
-    <!-- Parallax decorations -->
-    <div class="absolute top-10 left-10 w-24 h-24 border-2 border-white/20 rounded-3xl rotate-12 parallax-el" data-speed="0.3"></div>
-    <div class="absolute bottom-10 right-20 w-16 h-16 bg-white/10 rounded-full parallax-el" data-speed="0.5"></div>
+  <section class="py-20 bg-gradient-to-l from-orange-600 via-orange-500 to-amber-700 relative overflow-hidden">
+    <div class="absolute inset-0"
+      style="background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px);background-size:25px 25px;">
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8" id="stats-grid">
-        <div class="text-center gsap-fade-up">
-          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2 counter" data-target="300">0</div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 reveal">
+        <div class="text-center">
+          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2" data-target="300">0</div>
           <div class="text-orange-200 text-sm font-black uppercase tracking-widest">مشروع منجز</div>
         </div>
-        <div class="text-center gsap-fade-up">
-          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2 counter" data-target="300">0</div>
+        <div class="text-center">
+          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2" data-target="300">0</div>
           <div class="text-orange-200 text-sm font-black uppercase tracking-widest">عميل سعيد</div>
         </div>
-        <div class="text-center gsap-fade-up">
-          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2 counter" data-target="8">0</div>
+        <div class="text-center">
+          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2" data-target="8">0</div>
           <div class="text-orange-200 text-sm font-black uppercase tracking-widest">سنوات خبرة</div>
         </div>
-        <div class="text-center gsap-fade-up">
-          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2 counter" data-target="9">0</div>
+        <div class="text-center">
+          <div class="stat-num font-display text-5xl lg:text-6xl font-black text-white mb-2" data-target="9">0</div>
           <div class="text-orange-200 text-sm font-black uppercase tracking-widest">عضو في الفريق</div>
         </div>
       </div>
     </div>
   </section>
 
+
   <!-- ====== PORTFOLIO ====== -->
   <section id="portfolio" class="py-28 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
-        <span class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <span
+          class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
           <i class="fa fa-briefcase"></i> أعمالنا
         </span>
         <h2 class="font-display text-4xl lg:text-5xl font-black text-stone-900 leading-tight mb-4">
@@ -840,31 +977,38 @@
         <p class="text-stone-500">مجموعة مختارة من أحدث أعمالنا في مختلف المجالات.</p>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="portfolio-grid">
-        <div class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group gsap-scale">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
           <div class="relative overflow-hidden h-52">
-            <div class="port-img w-full h-full bg-gradient-to-br from-orange-400 to-orange-700 flex items-center justify-center">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-orange-400 to-orange-700 flex items-center justify-center">
               <i class="fa fa-shopping-bag text-white text-5xl opacity-80"></i>
             </div>
             <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
               <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض المشروع ←</a>
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</a>
             </div>
           </div>
           <div class="p-5">
-            <span class="text-xs font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full">تجارة إلكترونية</span>
+            <span class="text-xs font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-full">تجارة
+              إلكترونية</span>
             <h3 class="font-display font-black text-stone-900 mt-2">متجر ShopNest</h3>
             <p class="text-stone-500 text-sm mt-1">منصة تجارة إلكترونية متكاملة بإدارة المخزون والتحليلات.</p>
           </div>
         </div>
-        <div class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group gsap-scale">
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
           <div class="relative overflow-hidden h-52">
-            <div class="port-img w-full h-full bg-gradient-to-br from-amber-700 to-stone-800 flex items-center justify-center">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-amber-700 to-stone-800 flex items-center justify-center">
               <i class="fa fa-building text-white text-5xl opacity-80"></i>
             </div>
             <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
               <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض المشروع ←</a>
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</a>
             </div>
           </div>
           <div class="p-5">
@@ -873,14 +1017,17 @@
             <p class="text-stone-500 text-sm mt-1">موقع مؤسسي لشركة استشارات مالية مع تكامل CMS.</p>
           </div>
         </div>
-        <div class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group gsap-scale">
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
           <div class="relative overflow-hidden h-52">
-            <div class="port-img w-full h-full bg-gradient-to-br from-orange-300 to-amber-700 flex items-center justify-center">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-orange-300 to-amber-700 flex items-center justify-center">
               <i class="fa fa-mobile-alt text-white text-5xl opacity-80"></i>
             </div>
             <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
               <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض المشروع ←</a>
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</a>
             </div>
           </div>
           <div class="p-5">
@@ -889,13 +1036,18 @@
             <p class="text-stone-500 text-sm mt-1">تطبيق لياقة بـ React Native مع مقاييس فورية.</p>
           </div>
         </div>
-        <div class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group gsap-scale">
+        <!-- New Projects -->
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
           <div class="relative overflow-hidden h-52">
-            <div class="port-img w-full h-full bg-gradient-to-br from-blue-400 to-blue-700 flex items-center justify-center">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-blue-400 to-blue-700 flex items-center justify-center">
               <i class="fa fa-stethoscope text-white text-5xl opacity-80"></i>
             </div>
             <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
-              <span class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl">عرض المشروع ←</span>
+              <span
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</span>
             </div>
           </div>
           <div class="p-5">
@@ -904,13 +1056,17 @@
             <p class="text-stone-500 text-sm mt-1">نظام إدارة عيادات وحجوزات متقدم للمراكز الطبية.</p>
           </div>
         </div>
-        <div class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group gsap-scale">
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
           <div class="relative overflow-hidden h-52">
-            <div class="port-img w-full h-full bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-emerald-400 to-emerald-700 flex items-center justify-center">
               <i class="fa fa-leaf text-white text-5xl opacity-80"></i>
             </div>
             <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
-              <span class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl">عرض المشروع ←</span>
+              <span
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</span>
             </div>
           </div>
           <div class="p-5">
@@ -919,13 +1075,17 @@
             <p class="text-stone-500 text-sm mt-1">منصة للتوعية بالاستدامة وتتبع البصمة الكربونية.</p>
           </div>
         </div>
-        <div class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group gsap-scale">
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
           <div class="relative overflow-hidden h-52">
-            <div class="port-img w-full h-full bg-gradient-to-br from-purple-400 to-purple-700 flex items-center justify-center">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-purple-400 to-purple-700 flex items-center justify-center">
               <i class="fa fa-graduation-cap text-white text-5xl opacity-80"></i>
             </div>
             <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
-              <span class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl">عرض المشروع ←</span>
+              <span
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</span>
             </div>
           </div>
           <div class="p-5">
@@ -934,21 +1094,62 @@
             <p class="text-stone-500 text-sm mt-1">منصة تعليم تفاعلية مع نظام إدارة تعلم متكامل.</p>
           </div>
         </div>
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
+          <div class="relative overflow-hidden h-52">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-rose-400 to-rose-700 flex items-center justify-center">
+              <i class="fa fa-utensils text-white text-5xl opacity-80"></i>
+            </div>
+            <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
+              <span
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-black text-rose-600 bg-rose-50 px-2.5 py-1 rounded-full">مطاعم</span>
+            <h3 class="font-display font-black text-stone-900 mt-2">تطبيق TastyDash</h3>
+            <p class="text-stone-500 text-sm mt-1">نظام طلب طعام وتوصيل متكامل للمطاعم الكبرى.</p>
+          </div>
+        </div>
+        <div
+          class="port-card rounded-3xl overflow-hidden shadow-md bg-white border border-orange-100 card-glow cursor-pointer group">
+          <div class="relative overflow-hidden h-52">
+            <div
+              class="port-img w-full h-full bg-gradient-to-br from-cyan-400 to-cyan-700 flex items-center justify-center">
+              <i class="fa fa-plane text-white text-5xl opacity-80"></i>
+            </div>
+            <div class="port-overlay absolute inset-0 bg-stone-900/75 flex items-center justify-center">
+              <span
+                class="text-white font-display font-black text-sm border-2 border-white/70 px-6 py-2.5 rounded-2xl hover:bg-white hover:text-stone-900 transition-colors">عرض
+                المشروع ←</span>
+            </div>
+          </div>
+          <div class="p-5">
+            <span class="text-xs font-black text-cyan-600 bg-cyan-50 px-2.5 py-1 rounded-full">سياحة</span>
+            <h3 class="font-display font-black text-stone-900 mt-2">منصة TravelQuest</h3>
+            <p class="text-stone-500 text-sm mt-1">موقع حجوزات سياحية ورحلات مخصص لوكالات السفر.</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="text-center mt-12 gsap-fade-up">
+    <div class="text-center mt-12 reveal">
       <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-        class="magnetic shine inline-flex items-center gap-3 border-2 border-orange-200 hover:border-orange-500 text-stone-700 hover:text-orange-600 hover:bg-orange-50 font-black px-9 py-4 rounded-2xl transition-all">
+        class="inline-flex items-center gap-3 border-2 border-orange-200 hover:border-orange-500 text-stone-700 hover:text-orange-600 hover:bg-orange-50 font-black px-9 py-4 rounded-2xl transition-all">
         عرض جميع المشاريع <i class="fa fa-arrow-left text-sm"></i>
       </a>
     </div>
+    </div>
   </section>
+
 
   <!-- ====== PRICING ====== -->
   <section id="pricing" class="py-28 bg-orange-50/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
-        <span class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-white px-4 py-2 rounded-full border border-orange-200">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <span
+          class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-white px-4 py-2 rounded-full border border-orange-200">
           <i class="fa fa-tag"></i> الأسعار
         </span>
         <h2 class="font-display text-4xl lg:text-5xl font-black text-stone-900 leading-tight mb-4">
@@ -956,52 +1157,78 @@
         </h2>
         <p class="text-stone-500">اختر الخطة المناسبة لمشروعك. جميع الخطط تشمل ضمان الجودة.</p>
       </div>
-
-      <div class="flex flex-wrap justify-center gap-4 mb-12 gsap-fade-up">
-        <button onclick="showPricing('web')" class="pricing-tab px-8 py-3 rounded-2xl font-black text-sm bg-orange-600 text-white shadow-lg shadow-orange-200 transition-all border-2 border-orange-600">تصميم المواقع</button>
-        <button onclick="showPricing('identity')" class="pricing-tab px-8 py-3 rounded-2xl font-black text-sm bg-white text-stone-600 hover:bg-orange-50 transition-all border-2 border-orange-100">الهوية البصرية</button>
-        <button onclick="showPricing('mobile')" class="pricing-tab px-8 py-3 rounded-2xl font-black text-sm bg-white text-stone-600 hover:bg-orange-50 transition-all border-2 border-orange-100">تطبيقات الجوال</button>
+      <!-- Tabs -->
+      <div class="flex flex-wrap justify-center gap-4 mb-12 reveal">
+        <button onclick="showPricing('web')"
+          class="pricing-tab px-8 py-3 rounded-2xl font-black text-sm bg-orange-600 text-white shadow-lg shadow-orange-200 transition-all border-2 border-orange-600">تصميم
+          المواقع</button>
+        <button onclick="showPricing('identity')"
+          class="pricing-tab px-8 py-3 rounded-2xl font-black text-sm bg-white text-stone-600 hover:bg-orange-50 transition-all border-2 border-orange-100">الهوية
+          البصرية</button>
+        <button onclick="showPricing('mobile')"
+          class="pricing-tab px-8 py-3 rounded-2xl font-black text-sm bg-white text-stone-600 hover:bg-orange-50 transition-all border-2 border-orange-100">تطبيقات
+          الجوال</button>
       </div>
 
-      <div id="pricing-web" class="pricing-grid grid lg:grid-cols-3 gap-6 items-start max-w-5xl mx-auto gsap-fade-up">
-        <div class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow gsap-scale">
+      <div id="pricing-web" class="pricing-grid grid lg:grid-cols-3 gap-6 items-start max-w-5xl mx-auto reveal">
+        <!-- Basic Package -->
+        <div class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow">
           <div class="mb-7">
             <div class="text-xs font-black text-stone-400 uppercase tracking-widest mb-2">الباقة الأساسية</div>
             <div class="flex items-end gap-1 mt-3">
               <span class="font-display text-5xl font-black text-stone-900">300</span>
               <span class="text-stone-400 mb-2 font-bold">ر.س</span>
             </div>
-            <p class="text-stone-500 text-sm mt-2">مناسبة للشركات الصغيرة أو الأفراد.</p>
+            <p class="text-stone-500 text-sm mt-2">مناسبة للشركات الصغيرة أو الأفراد الذين يريدون وجود موقع بسيط وسريع
+              على الإنترنت.</p>
           </div>
           <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>تصميم موقع أساسي بـ 3–5 صفحات</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>تحسين محركات البحث SEO</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>تصميم متجاوب مع الهواتف</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>دعم فني لمدة شهر</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>تصميم موقع أساسي بـ 3–5 صفحات</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>تحسين محركات البحث SEO</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>تصميم متجاوب مع الهواتف</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>دعم فني لمدة شهر</li>
           </ul>
           <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-            class="magnetic shine block text-center border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-stone-700 hover:text-orange-600 font-black py-3.5 rounded-2xl transition-all">اطلب الآن</a>
+            class="block text-center border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-stone-700 hover:text-orange-600 font-black py-3.5 rounded-2xl transition-all">اطلب
+            الآن</a>
         </div>
-        <div class="relative bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-8 shadow-2xl shadow-orange-300 card-glow overflow-hidden gsap-scale">
-          <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-xs font-black px-5 py-2 rounded-full uppercase tracking-widest shadow-lg">الأكثر طلباً</div>
+
+        <!-- Advanced Package -->
+        <div
+          class="relative bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-8 shadow-2xl shadow-orange-300 card-glow overflow-hidden">
+          <div
+            class="absolute -top-5 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-xs font-black px-5 py-2 rounded-full uppercase tracking-widest shadow-lg">
+            الأكثر طلباً</div>
           <div class="mb-7">
             <div class="text-xs font-black text-orange-200 uppercase tracking-widest mb-2">الباقة المتقدمة</div>
             <div class="flex items-end gap-1 mt-3">
               <span class="font-display text-5xl font-black text-white">500</span>
               <span class="text-orange-200 mb-2 font-bold">ر.س</span>
             </div>
-            <p class="text-orange-100 text-sm mt-2">مصممة للشركات المتوسطة أو المشاريع التي تحتاج لموقع أكثر احترافية.</p>
+            <p class="text-orange-100 text-sm mt-2">مصممة للشركات المتوسطة أو المشاريع التي تحتاج لموقع أكثر احترافية.
+            </p>
           </div>
           <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-sm text-white"><i class="fa fa-check-circle text-orange-200"></i>تصميم موقع متقدم بـ 5–10 صفحات</li>
-            <li class="flex items-center gap-3 text-sm text-white"><i class="fa fa-check-circle text-orange-200"></i>تحسين محركات البحث SEO</li>
-            <li class="flex items-center gap-3 text-sm text-white"><i class="fa fa-check-circle text-orange-200"></i>دعم فني لمدة شهر</li>
-            <li class="flex items-center gap-3 text-sm text-white"><i class="fa fa-check-circle text-orange-200"></i>نموذج تواصل (واتساب/انستقرام)</li>
+            <li class="flex items-center gap-3 text-sm text-white"><i
+                class="fa fa-check-circle text-orange-200"></i>تصميم موقع متقدم بـ 5–10 صفحات</li>
+            <li class="flex items-center gap-3 text-sm text-white"><i
+                class="fa fa-check-circle text-orange-200"></i>تحسين محركات البحث SEO</li>
+            <li class="flex items-center gap-3 text-sm text-white"><i class="fa fa-check-circle text-orange-200"></i>دعم
+              فني لمدة شهر</li>
+            <li class="flex items-center gap-3 text-sm text-white"><i
+                class="fa fa-check-circle text-orange-200"></i>نموذج تواصل (واتساب/انستقرام)</li>
           </ul>
           <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-            class="magnetic shine block text-center bg-white text-orange-600 hover:bg-orange-50 font-black py-3.5 rounded-2xl transition-all shadow-lg">اطلب الآن</a>
+            class="block text-center bg-white text-orange-600 hover:bg-orange-50 font-black py-3.5 rounded-2xl transition-all shadow-lg">اطلب
+            الآن</a>
         </div>
-        <div class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow gsap-scale">
+
+        <!-- Professional Package -->
+        <div class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow">
           <div class="mb-7">
             <div class="text-xs font-black text-stone-400 uppercase tracking-widest mb-2">الباقة الاحترافية</div>
             <div class="flex items-end gap-1 mt-3">
@@ -1011,93 +1238,141 @@
             <p class="text-stone-500 text-sm mt-2">مخصصة للشركات الكبرى أو المشاريع التي تحتاج موقع كامل متكامل.</p>
           </div>
           <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>تصميم موقع كامل ومخصص</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>تحسين محركات البحث SEO متقدم</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>دعم فني لمدة شهر</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>صفحة منتجات / خدمات شاملة</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>ربط السوشيال ميديا والدفع</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>تصميم موقع كامل ومخصص</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>تحسين محركات البحث SEO متقدم</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>دعم فني لمدة شهر</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>صفحة منتجات / خدمات شاملة</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>ربط السوشيال ميديا والدفع</li>
           </ul>
           <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
-            class="magnetic shine block text-center border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-stone-700 hover:text-orange-600 font-black py-3.5 rounded-2xl transition-all">اطلب الآن</a>
+            class="block text-center border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-stone-700 hover:text-orange-600 font-black py-3.5 rounded-2xl transition-all">اطلب
+            الآن</a>
         </div>
       </div>
 
-      <div id="pricing-identity" class="pricing-grid hidden grid lg:grid-cols-3 gap-6 items-start max-w-5xl mx-auto">
+      <div id="pricing-identity"
+        class="pricing-grid hidden grid lg:grid-cols-3 gap-6 items-start max-w-5xl mx-auto reveal">
         <div class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow">
           <div class="mb-7">
             <div class="text-xs font-black text-stone-400 uppercase tracking-widest mb-2">شعار</div>
-            <div class="flex items-end gap-1 mt-3"><span class="font-display text-5xl font-black text-stone-900">299</span><span class="text-stone-400 mb-2 font-bold">ر.س</span></div>
+            <div class="flex items-end gap-1 mt-3">
+              <span class="font-display text-5xl font-black text-stone-900">299</span>
+              <span class="text-stone-400 mb-2 font-bold">ر.س</span>
+            </div>
           </div>
           <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>2 نماذج مختلفة</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>تسليم الملفات الأصلية</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>2 نماذج مختلفة</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>تسليم الملفات الأصلية</li>
           </ul>
-          <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank" class="magnetic shine block text-center border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-stone-700 hover:text-orange-600 font-black py-3.5 rounded-2xl transition-all">اطلب الآن</a>
+          <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+            class="block text-center border-2 border-orange-200 hover:border-orange-500 hover:bg-orange-50 text-stone-700 hover:text-orange-600 font-black py-3.5 rounded-2xl transition-all">اطلب
+            الآن</a>
         </div>
         <div class="bg-white border-2 border-orange-500 rounded-3xl p-8 shadow-xl card-glow relative">
           <div class="mb-7">
             <div class="text-xs font-black text-orange-500 uppercase tracking-widest mb-2">هوية بصرية</div>
-            <div class="flex items-end gap-1 mt-3"><span class="font-display text-5xl font-black text-stone-900">499</span><span class="text-stone-400 mb-2 font-bold">ر.س</span></div>
+            <div class="flex items-end gap-1 mt-3">
+              <span class="font-display text-5xl font-black text-stone-900">499</span>
+              <span class="text-stone-400 mb-2 font-bold">ر.س</span>
+            </div>
           </div>
           <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>لوجو + هوية بصرية كاملة</li>
-            <li class="flex items-center gap-3 text-sm text-stone-700"><i class="fa fa-check-circle text-green-500"></i>4 تصاميم جاهزة للسوشيال ميديا</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700"><i
+                class="fa fa-check-circle text-green-500"></i>لوجو + هوية بصرية كاملة</li>
+            <li class="flex items-center gap-3 text-sm text-stone-700">
+              <i class="fa fa-check-circle text-green-500"></i>
+              4 تصاميم جاهزة للسوشيال ميديا (فيسبوك، إنستجرام) مناسبة للإعلانات والمنشورات
+            </li>
           </ul>
-          <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank" class="magnetic shine block text-center bg-orange-600 text-white font-black py-3.5 rounded-2xl shadow-lg">اطلب الآن</a>
+          <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+            class="block text-center bg-orange-600 text-white font-black py-3.5 rounded-2xl shadow-lg">اطلب الآن</a>
         </div>
       </div>
 
-      <div id="pricing-mobile" class="pricing-grid hidden grid lg:grid-cols-3 gap-6 items-start max-w-5xl mx-auto">
-        <div class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow col-span-3 text-center py-20">
+      <div id="pricing-mobile"
+        class="pricing-grid hidden grid lg:grid-cols-3 gap-6 items-start max-w-5xl mx-auto reveal">
+        <div
+          class="bg-white border-2 border-orange-100 rounded-3xl p-8 shadow-sm card-glow col-span-3 text-center py-20">
           <i class="fa fa-mobile-alt text-6xl text-orange-500 mb-5"></i>
           <h3 class="text-3xl font-black text-stone-900 mb-4">تطبيقات حسب الطلب</h3>
-          <p class="text-stone-500 mb-8 max-w-lg mx-auto">نظراً لاختلاف متطلبات التطبيقات، يرجى التواصل معنا للحصول على عرض سعر مخصص.</p>
-          <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank" class="magnetic shine inline-block bg-stone-900 text-white font-black px-10 py-4 rounded-2xl shadow-lg">تواصل معنا للتفاصيل</a>
+          <p class="text-stone-500 mb-8 max-w-lg mx-auto">نظراً لاختلاف متطلبات التطبيقات، يرجى التواصل معنا للحصول على
+            عرض سعر مخصص حسب ميزات تطبيقك.</p>
+          <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+            class="inline-block bg-stone-900 text-white font-black px-10 py-4 rounded-2xl shadow-lg">تواصل معنا
+            للتفاصيل</a>
         </div>
       </div>
     </div>
+    </div>
   </section>
+
 
   <!-- ====== TESTIMONIALS ====== -->
   <section class="py-24 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-16 gsap-fade-up">
-        <span class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <span
+          class="inline-flex items-center gap-2 text-orange-600 text-xs font-black uppercase tracking-widest mb-4 bg-orange-50 px-4 py-2 rounded-full border border-orange-200">
           <i class="fa fa-comments"></i> آراء العملاء
         </span>
         <h2 class="font-display text-4xl lg:text-5xl font-black text-stone-900 leading-tight">
           ماذا يقول<br /><span class="grad-text">عملاؤنا عنا</span>
         </h2>
       </div>
-      <div class="grid md:grid-cols-3 gap-6" id="testimonials-grid">
-        <div class="bg-orange-50 border border-orange-100 rounded-3xl p-7 card-glow gsap-scale">
-          <div class="flex gap-1 mb-5"><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i></div>
-          <p class="text-stone-600 leading-loose mb-6 text-sm">"الراية حولت موقعنا القديم إلى منصة عصرية وعالية التحويل. الفريق كان محترفاً وسريعاً وفهم رؤيتنا تماماً."</p>
+      <div class="grid md:grid-cols-3 gap-6 reveal">
+        <div class="bg-orange-50 border border-orange-100 rounded-3xl p-7 card-glow">
+          <div class="flex gap-1 mb-5"><i class="fa fa-star text-orange-400"></i><i
+              class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i
+              class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i></div>
+          <p class="text-stone-600 leading-loose mb-6 text-sm">"الراية حولت موقعنا القديم إلى منصة عصرية وعالية التحويل.
+            الفريق كان محترفاً وسريعاً وفهم رؤيتنا تماماً."</p>
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 bg-gradient-to-br from-orange-500 to-amber-700 rounded-full flex items-center justify-center text-white font-display font-black text-sm shadow-md">س م</div>
+            <div
+              class="w-11 h-11 bg-gradient-to-br from-orange-500 to-amber-700 rounded-full flex items-center justify-center text-white font-display font-black text-sm shadow-md">
+              س م</div>
             <div>
               <div class="font-display font-black text-stone-900">سارة محمود</div>
               <div class="text-xs text-stone-400">المدير التنفيذي، TechNova</div>
             </div>
           </div>
         </div>
-        <div class="bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-7 shadow-2xl shadow-orange-200 card-glow relative overflow-hidden gsap-scale">
-          <div class="absolute inset-0 opacity-5" style="background-image:radial-gradient(circle,white 1.5px,transparent 1.5px);background-size:20px 20px;"></div>
-          <div class="flex gap-1 mb-5"><i class="fa fa-star text-white"></i><i class="fa fa-star text-white"></i><i class="fa fa-star text-white"></i><i class="fa fa-star text-white"></i><i class="fa fa-star text-white"></i></div>
-          <p class="text-orange-100 leading-loose mb-6 text-sm">"التطبيق الذي بنوه لنا تجاوز كل توقعاتنا. تصميم رائع، أداء صلب، وتم تسليمه أسبوعين قبل الموعد. عمل استثنائي."</p>
+        <div
+          class="bg-gradient-to-br from-orange-500 to-amber-700 rounded-3xl p-7 shadow-2xl shadow-orange-200 card-glow relative overflow-hidden">
+          <div class="absolute inset-0 opacity-5"
+            style="background-image:radial-gradient(circle,white 1.5px,transparent 1.5px);background-size:20px 20px;">
+          </div>
+          <div class="flex gap-1 mb-5"><i class="fa fa-star text-white"></i><i class="fa fa-star text-white"></i><i
+              class="fa fa-star text-white"></i><i class="fa fa-star text-white"></i><i
+              class="fa fa-star text-white"></i></div>
+          <p class="text-orange-100 leading-loose mb-6 text-sm">"التطبيق الذي بنوه لنا تجاوز كل توقعاتنا. تصميم رائع،
+            أداء صلب، وتم تسليمه أسبوعين قبل الموعد. عمل استثنائي."</p>
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 bg-white/20 rounded-full flex items-center justify-center text-white font-display font-black text-sm">أ خ</div>
+            <div
+              class="w-11 h-11 bg-white/20 rounded-full flex items-center justify-center text-white font-display font-black text-sm">
+              أ خ</div>
             <div>
               <div class="font-display font-black text-white">أحمد خالد</div>
               <div class="text-xs text-orange-200">المؤسس، FitTrack</div>
             </div>
           </div>
         </div>
-        <div class="bg-orange-50 border border-orange-100 rounded-3xl p-7 card-glow gsap-scale">
-          <div class="flex gap-1 mb-5"><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i></div>
-          <p class="text-stone-600 leading-loose mb-6 text-sm">"من اليوم الأول كان فريق الراية تواصلياً ومبدعاً واستراتيجياً. مبيعاتنا الإلكترونية زادت 40% في الشهر الأول."</p>
+        <div class="bg-orange-50 border border-orange-100 rounded-3xl p-7 card-glow">
+          <div class="flex gap-1 mb-5"><i class="fa fa-star text-orange-400"></i><i
+              class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i><i
+              class="fa fa-star text-orange-400"></i><i class="fa fa-star text-orange-400"></i></div>
+          <p class="text-stone-600 leading-loose mb-6 text-sm">"من اليوم الأول كان فريق الراية تواصلياً ومبدعاً
+            واستراتيجياً. مبيعاتنا الإلكترونية زادت 40% في الشهر الأول. أنصح بشدة!"</p>
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center text-white font-display font-black text-sm shadow-md">ل ب</div>
+            <div
+              class="w-11 h-11 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center text-white font-display font-black text-sm shadow-md">
+              ل ب</div>
             <div>
               <div class="font-display font-black text-stone-900">ليلى برانت</div>
               <div class="text-xs text-stone-400">المدير، ShopNest</div>
@@ -1108,49 +1383,81 @@
     </div>
   </section>
 
+
+
+
+
+
   <!-- ====== FOOTER ====== -->
   <footer class="bg-stone-900 text-white pt-16 pb-8 relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none opacity-5" style="background-image:radial-gradient(circle,rgba(249,115,22,.5) 1px,transparent 1px);background-size:30px 30px;"></div>
+    <div class="absolute inset-0 pointer-events-none opacity-5"
+      style="background-image:radial-gradient(circle,rgba(249,115,22,.5) 1px,transparent 1px);background-size:30px 30px;">
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
         <div class="col-span-2">
           <div class="flex items-center gap-3 mb-5">
+
             <div>
               <span class="font-display font-black text-xl text-white block leading-none">الراية</span>
               <span class="text-xs text-orange-400 font-bold">للبرمجة والتصميم</span>
             </div>
           </div>
-          <p class="text-stone-400 text-sm leading-loose max-w-xs mb-6">بناء مواقع حديثة وحلول برمجية ذكية تنمي الأعمال حول العالم.</p>
+          <p class="text-stone-400 text-sm leading-loose max-w-xs mb-6">بناء مواقع حديثة وحلول برمجية ذكية تنمي الأعمال
+            حول العالم.</p>
           <div class="flex gap-3">
-            <a href="#" class="w-9 h-9 bg-stone-800 hover:bg-orange-600 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="w-9 h-9 bg-stone-800 hover:bg-orange-500 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank" class="w-9 h-9 bg-stone-800 hover:bg-orange-600 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="w-9 h-9 bg-stone-800 hover:bg-orange-700 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"
+              class="w-9 h-9 bg-stone-800 hover:bg-orange-600 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i
+                class="fab fa-facebook-f"></i></a>
+            <a href="#"
+              class="w-9 h-9 bg-stone-800 hover:bg-orange-500 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i
+                class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/alraya.programming.design?igsh=czd1cW1xejYxOWdl" target="_blank"
+              class="w-9 h-9 bg-stone-800 hover:bg-orange-600 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i
+                class="fab fa-instagram"></i></a>
+            <a href="#"
+              class="w-9 h-9 bg-stone-800 hover:bg-orange-700 text-stone-400 hover:text-white rounded-xl flex items-center justify-center transition-all text-sm"><i
+                class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
         <div>
           <h4 class="font-display font-black text-white text-xs mb-5 uppercase tracking-widest">الشركة</h4>
           <ul class="space-y-3">
             <li><a href="#about" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">من نحن</a></li>
-            <li><a href="#portfolio" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">أعمالنا</a></li>
-            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تواصل معنا</a></li>
+            <li><a href="#portfolio" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">أعمالنا</a>
+            </li>
+            <li><a href="#contact" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">الوظائف</a>
+            </li>
+            <li><a href="#contact" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تواصل معنا</a>
+            </li>
           </ul>
         </div>
         <div>
           <h4 class="font-display font-black text-white text-xs mb-5 uppercase tracking-widest">الخدمات</h4>
           <ul class="space-y-3">
-            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تطوير الويب</a></li>
-            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تطبيقات الموبايل</a></li>
-            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تصميم UI/UX</a></li>
-            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">التجارة الإلكترونية</a></li>
+            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تطوير
+                الويب</a></li>
+            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تطبيقات
+                الموبايل</a></li>
+            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تصميم
+                UI/UX</a></li>
+            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">تحسين SEO</a>
+            </li>
+            <li><a href="#services" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">التجارة
+                الإلكترونية</a></li>
           </ul>
         </div>
         <div>
           <h4 class="font-display font-black text-white text-xs mb-5 uppercase tracking-widest">الموارد</h4>
           <ul class="space-y-3">
-            <li><a href="#pricing" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">الأسعار</a></li>
-            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">سياسة الخصوصية</a></li>
-            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">شروط الاستخدام</a></li>
+            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">التوثيق</a></li>
+            <li><a href="#pricing" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">الأسعار</a>
+            </li>
+            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">سياسة الخصوصية</a>
+            </li>
+            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">شروط الاستخدام</a>
+            </li>
+            <li><a href="#" class="text-stone-400 hover:text-orange-400 text-sm transition-colors">خريطة الموقع</a></li>
           </ul>
         </div>
       </div>
@@ -1167,396 +1474,8 @@
     <i class="fa fa-chevron-up"></i>
   </button>
 
-  <!-- ======================================================
-       SCRIPTS
-  ====================================================== -->
   <script>
-  // ── Wait for GSAP ──
-  window.addEventListener('load', () => {
-    gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
-    // ── Progress Bar ──
-    gsap.to('#progress-bar', {
-      scaleX: 1,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: 'body',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true
-      }
-    });
-
-    // ── Custom Cursor ──
-    const cursor = document.getElementById('cursor');
-    const follower = document.getElementById('cursor-follower');
-    let mouseX = 0, mouseY = 0, followerX = 0, followerY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
-    });
-
-    function animateFollower() {
-      followerX += (mouseX - followerX) * 0.12;
-      followerY += (mouseY - followerY) * 0.12;
-      gsap.set(follower, { x: followerX, y: followerY });
-      requestAnimationFrame(animateFollower);
-    }
-    animateFollower();
-
-    document.querySelectorAll('a, button, .card-glow').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        gsap.to(cursor, { scale: 2.5, duration: 0.3 });
-        gsap.to(follower, { scale: 1.5, borderColor: 'rgba(249,115,22,.8)', duration: 0.3 });
-      });
-      el.addEventListener('mouseleave', () => {
-        gsap.to(cursor, { scale: 1, duration: 0.3 });
-        gsap.to(follower, { scale: 1, borderColor: 'rgba(249,115,22,.4)', duration: 0.3 });
-      });
-    });
-
-    // ── Three.js Hero Background ──
-    const canvas = document.getElementById('hero-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.z = 5;
-
-    // Create floating geometric shapes
-    const shapes = [];
-    const geometries = [
-      new THREE.IcosahedronGeometry(0.3, 0),
-      new THREE.OctahedronGeometry(0.25, 0),
-      new THREE.TetrahedronGeometry(0.3, 0),
-      new THREE.BoxGeometry(0.3, 0.3, 0.3),
-    ];
-    const material = new THREE.MeshPhongMaterial({
-      color: 0xf97316,
-      transparent: true,
-      opacity: 0.15,
-      wireframe: true,
-    });
-    const solidMaterial = new THREE.MeshPhongMaterial({
-      color: 0xf97316,
-      transparent: true,
-      opacity: 0.06,
-    });
-
-    for (let i = 0; i < 20; i++) {
-      const geoIdx = Math.floor(Math.random() * geometries.length);
-      const mesh = new THREE.Mesh(geometries[geoIdx], i % 3 === 0 ? solidMaterial.clone() : material.clone());
-      mesh.position.set(
-        (Math.random() - 0.5) * 16,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 5
-      );
-      mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-      const scale = 0.4 + Math.random() * 1.2;
-      mesh.scale.setScalar(scale);
-      mesh.userData = {
-        rotSpeed: { x: (Math.random() - 0.5) * 0.01, y: (Math.random() - 0.5) * 0.01, z: (Math.random() - 0.5) * 0.005 },
-        floatSpeed: 0.3 + Math.random() * 0.7,
-        floatAmp: 0.3 + Math.random() * 0.5,
-        initY: mesh.position.y,
-        phase: Math.random() * Math.PI * 2,
-      };
-      scene.add(mesh);
-      shapes.push(mesh);
-    }
-
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-    const pointLight = new THREE.PointLight(0xf97316, 1, 20);
-    pointLight.position.set(3, 3, 3);
-    scene.add(pointLight);
-
-    // Mouse parallax for Three.js
-    let mouse3D = { x: 0, y: 0 };
-    document.addEventListener('mousemove', (e) => {
-      mouse3D.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouse3D.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-    });
-
-    // Clock
-    const clock = new THREE.Clock();
-
-    function render3D() {
-      const elapsed = clock.getElapsedTime();
-
-      shapes.forEach(s => {
-        s.rotation.x += s.userData.rotSpeed.x;
-        s.rotation.y += s.userData.rotSpeed.y;
-        s.rotation.z += s.userData.rotSpeed.z;
-        s.position.y = s.userData.initY + Math.sin(elapsed * s.userData.floatSpeed + s.userData.phase) * s.userData.floatAmp;
-      });
-
-      // Subtle camera parallax
-      camera.position.x += (mouse3D.x * 0.5 - camera.position.x) * 0.05;
-      camera.position.y += (mouse3D.y * 0.3 - camera.position.y) * 0.05;
-      camera.lookAt(scene.position);
-
-      renderer.render(scene, camera);
-      requestAnimationFrame(render3D);
-    }
-    render3D();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    // ── GSAP Hero Intro ──
-    const heroTl = gsap.timeline({ delay: 0.3 });
-
-    // Stagger lines from below
-    heroTl.fromTo(['#line1','#line2','#line3','#line4'],
-      { yPercent: 110, opacity: 0 },
-      { yPercent: 0, opacity: 1, duration: 1, stagger: 0.12, ease: 'power4.out' }
-    );
-    heroTl.to('#hero-badge', { opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.7)' }, '-=0.5');
-    heroTl.to('#hero-desc', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3');
-    heroTl.to('#hero-btns', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4');
-    heroTl.to('#hero-stats', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3');
-
-    // Hero card entrance
-    heroTl.to('#hero-card', { opacity: 1, duration: 0.8, y: 0, ease: 'power3.out' }, '-=1.2');
-    heroTl.fromTo('#hero-card', { rotateY: 15 }, { rotateY: 0, duration: 1.2, ease: 'power3.out' }, '-=0.8');
-    heroTl.to('#badge1', { opacity: 1, x: 0, duration: 0.5, ease: 'back.out(2)' }, '-=0.4');
-    heroTl.to('#badge2', { opacity: 1, x: 0, duration: 0.5, ease: 'back.out(2)' }, '-=0.3');
-
-    // Draw underline SVG path
-    heroTl.to('#hero-underline', { strokeDashoffset: 0, duration: 0.8, ease: 'power2.out' }, '-=1.5');
-
-    // Animate progress bars
-    heroTl.fromTo('.progress-fill',
-      { width: '0%' },
-      { width: (i, el) => el.dataset.width, duration: 1.2, stagger: 0.2, ease: 'power3.out' },
-      '-=0.8'
-    );
-
-    // Scroll indicator
-    heroTl.to('#scroll-indicator', { opacity: 1, duration: 0.5 }, '-=0.2');
-
-    // Scroll dot bounce
-    gsap.to('#scroll-dot', {
-      y: 12, duration: 0.8, ease: 'power2.inOut', yoyo: true, repeat: -1
-    });
-
-    // Hex shapes
-    gsap.to('#hex1', { rotation: 360, duration: 20, ease: 'none', repeat: -1 });
-    gsap.to('#hex2', { rotation: -360, duration: 15, ease: 'none', repeat: -1 });
-
-    // ── Tilt effect on hero card ──
-    const tiltContainer = document.getElementById('tilt-container');
-    if (tiltContainer) {
-      tiltContainer.addEventListener('mousemove', (e) => {
-        const rect = tiltContainer.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const rx = ((e.clientY - cy) / (rect.height / 2)) * 8;
-        const ry = -((e.clientX - cx) / (rect.width / 2)) * 8;
-        gsap.to('#hero-card', { rotateX: rx, rotateY: ry, duration: 0.4, ease: 'power2.out', transformPerspective: 1000 });
-      });
-      tiltContainer.addEventListener('mouseleave', () => {
-        gsap.to('#hero-card', { rotateX: 0, rotateY: 0, duration: 0.8, ease: 'elastic.out(1,0.5)' });
-      });
-    }
-
-    // ── Floating particles ──
-    const container = document.getElementById('particles-container');
-    for (let i = 0; i < 30; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      const size = 2 + Math.random() * 5;
-      p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*100}%;opacity:${.1+Math.random()*.4}`;
-      container.appendChild(p);
-      gsap.to(p, {
-        y: -80 - Math.random() * 120,
-        x: (Math.random() - 0.5) * 80,
-        opacity: 0,
-        duration: 4 + Math.random() * 6,
-        delay: Math.random() * 4,
-        ease: 'none',
-        repeat: -1,
-        repeatDelay: Math.random() * 3,
-      });
-    }
-
-    // ── ScrollTrigger Animations ──
-    // Generic fade-up
-    gsap.utils.toArray('.gsap-fade-up').forEach(el => {
-      gsap.fromTo(el,
-        { y: 60, opacity: 0 },
-        {
-          y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
-        }
-      );
-    });
-
-    // Fade from left
-    gsap.utils.toArray('.gsap-fade-left').forEach(el => {
-      gsap.fromTo(el,
-        { x: -70, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-        }
-      );
-    });
-
-    // Fade from right
-    gsap.utils.toArray('.gsap-fade-right').forEach(el => {
-      gsap.fromTo(el,
-        { x: 70, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 80%', toggleActions: 'play none none none' }
-        }
-      );
-    });
-
-    // Scale in with stagger for grid items
-    gsap.utils.toArray('#services-grid .gsap-scale').forEach((el, i) => {
-      gsap.fromTo(el,
-        { scale: 0.7, opacity: 0, y: 30 },
-        {
-          scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.4)',
-          scrollTrigger: { trigger: '#services-grid', start: 'top 80%', toggleActions: 'play none none none' },
-          delay: i * 0.08
-        }
-      );
-    });
-
-    gsap.utils.toArray('#why-grid .gsap-scale').forEach((el, i) => {
-      gsap.fromTo(el,
-        { scale: 0.7, opacity: 0, y: 30 },
-        {
-          scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'back.out(1.4)',
-          scrollTrigger: { trigger: '#why-grid', start: 'top 80%', toggleActions: 'play none none none' },
-          delay: i * 0.1
-        }
-      );
-    });
-
-    gsap.utils.toArray('#portfolio-grid .gsap-scale').forEach((el, i) => {
-      gsap.fromTo(el,
-        { scale: 0.85, opacity: 0, y: 40 },
-        {
-          scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: { trigger: '#portfolio-grid', start: 'top 80%', toggleActions: 'play none none none' },
-          delay: i * 0.1
-        }
-      );
-    });
-
-    gsap.utils.toArray('#testimonials-grid .gsap-scale').forEach((el, i) => {
-      gsap.fromTo(el,
-        { scale: 0.8, opacity: 0, y: 50, rotation: i === 1 ? 2 : -1 },
-        {
-          scale: 1, opacity: 1, y: 0, rotation: 0, duration: 0.8, ease: 'back.out(1.2)',
-          scrollTrigger: { trigger: '#testimonials-grid', start: 'top 80%', toggleActions: 'play none none none' },
-          delay: i * 0.15
-        }
-      );
-    });
-
-    // About section cards
-    gsap.utils.toArray('#about .gsap-scale').forEach((el, i) => {
-      gsap.fromTo(el,
-        { scale: 0.75, opacity: 0 },
-        {
-          scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.7)',
-          scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' },
-          delay: i * 0.07
-        }
-      );
-    });
-
-    // Stats counter with GSAP
-    gsap.utils.toArray('.counter').forEach(el => {
-      const target = +el.dataset.target;
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top 80%',
-        onEnter: () => {
-          gsap.fromTo({ val: 0 }, { val: target, duration: 2, ease: 'power2.out',
-            onUpdate: function() { el.textContent = Math.floor(this.targets()[0].val) + '+'; }
-          });
-        }
-      });
-    });
-
-    // Stats grid stagger
-    gsap.utils.toArray('#stats-grid .gsap-fade-up').forEach((el, i) => {
-      gsap.fromTo(el,
-        { y: 40, opacity: 0 },
-        {
-          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out',
-          scrollTrigger: { trigger: '#stats-grid', start: 'top 80%', toggleActions: 'play none none none' },
-          delay: i * 0.12
-        }
-      );
-    });
-
-    // About icon rotate on scroll
-    ScrollTrigger.create({
-      trigger: '#about-card',
-      start: 'top 80%',
-      onEnter: () => {
-        gsap.fromTo('#about-icon', { rotation: -20, scale: 0.5, opacity: 0 },
-          { rotation: 0, scale: 1, opacity: 1, duration: 1, ease: 'elastic.out(1,.5)' });
-        gsap.fromTo('#about-hex1', { rotation: -90, opacity: 0 },
-          { rotation: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.2 });
-        gsap.fromTo('#about-hex2', { rotation: 90, opacity: 0 },
-          { rotation: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: 0.3 });
-      }
-    });
-
-    // ── Parallax on scroll for stats section ──
-    gsap.to('.parallax-el[data-speed="0.3"]', {
-      yPercent: -30,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '#stats-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-    gsap.to('.parallax-el[data-speed="0.5"]', {
-      yPercent: -50,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '#stats-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-
-    // ── Magnetic buttons ──
-    document.querySelectorAll('.magnetic').forEach(btn => {
-      btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
-        const dx = (e.clientX - cx) * 0.25;
-        const dy = (e.clientY - cy) * 0.25;
-        gsap.to(btn, { x: dx, y: dy, duration: 0.3, ease: 'power2.out' });
-      });
-      btn.addEventListener('mouseleave', () => {
-        gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1,.5)' });
-      });
-    });
-
-    // ── Navbar scroll ──
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
       navbar.classList.toggle('shadow-lg', window.scrollY > 30);
@@ -1565,12 +1484,6 @@
       else { btn.style.opacity = '0'; btn.style.pointerEvents = 'none'; }
     });
 
-    // Scroll to top with GSAP
-    document.getElementById('scrollTop').addEventListener('click', () => {
-      gsap.to(window, { scrollTo: 0, duration: 1, ease: 'power3.inOut' });
-    });
-
-    // ── Mobile menu ──
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
@@ -1580,53 +1493,57 @@
       menuIcon.className = open ? 'fa fa-bars text-xl' : 'fa fa-times text-xl';
     });
     document.querySelectorAll('.mobile-link').forEach(el => {
-      el.addEventListener('click', () => {
-        mobileMenu.classList.remove('open');
-        menuIcon.className = 'fa fa-bars text-xl';
+      el.addEventListener('click', () => { mobileMenu.classList.remove('open'); menuIcon.className = 'fa fa-bars text-xl'; });
+    });
+
+    const allReveal = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          revealObserver.unobserve(entry.target);
+        }
       });
-    });
+    }, { threshold: 0.1 });
+    allReveal.forEach(el => revealObserver.observe(el));
 
-  }); // end load
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      const steps = 60;
+      let current = 0;
+      const timer = setInterval(() => {
+        current += target / steps;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = Math.floor(current) + '+';
+      }, 2200 / steps);
+    }
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { animateCounter(entry.target); statObserver.unobserve(entry.target); }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
 
-  // ── Banner text rotation ──
-  const texts = [
-    "🔥 استلم موقعك الآن بـ 300 ريال سعودي",
-    "🚀 موقع كامل خلال 3 أيام فقط",
-    "💻 تصميم + برمجة + استضافة",
-    "🎯 مناسب للشركات والمتاجر",
-    "⏳ عرض محدود لفترة قصيرة"
-  ];
-  let bIndex = 0;
-  const bEl = document.getElementById("banner-text");
-  setInterval(() => {
-    bEl.classList.remove("translate-y-0", "opacity-100");
-    bEl.classList.add("-translate-y-6", "opacity-0");
-    setTimeout(() => {
-      bIndex = (bIndex + 1) % texts.length;
-      bEl.innerText = texts[bIndex];
-      bEl.classList.remove("-translate-y-6", "opacity-0");
-      bEl.classList.add("translate-y-6");
-      setTimeout(() => {
-        bEl.classList.remove("translate-y-6");
-        bEl.classList.add("translate-y-0", "opacity-100");
-      }, 50);
-    }, 400);
-  }, 2500);
+    function handleFormSubmit() {
+      const el = document.getElementById('form-success');
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 5000);
+    }
 
-  // ── Pricing tab ──
-  function showPricing(category) {
-    document.querySelectorAll('.pricing-grid').forEach(el => el.classList.add('hidden'));
-    const target = document.getElementById('pricing-' + category);
-    target.classList.remove('hidden');
-    gsap.fromTo(target, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+    function showPricing(category) {
+      document.querySelectorAll('.pricing-grid').forEach(el => el.classList.add('hidden'));
+      document.getElementById('pricing-' + category).classList.remove('hidden');
 
-    document.querySelectorAll('.pricing-tab').forEach(el => {
-      el.classList.remove('bg-orange-600', 'text-white', 'shadow-lg', 'shadow-orange-200', 'border-orange-600');
-      el.classList.add('bg-white', 'text-stone-600', 'border-orange-100');
-    });
-    event.currentTarget.classList.add('bg-orange-600', 'text-white', 'shadow-lg', 'shadow-orange-200', 'border-orange-600');
-    event.currentTarget.classList.remove('bg-white', 'text-stone-600', 'border-orange-100');
-  }
+      document.querySelectorAll('.pricing-tab').forEach(el => {
+        el.classList.remove('bg-orange-600', 'text-white', 'shadow-lg', 'shadow-orange-200', 'border-orange-600');
+        el.classList.add('bg-white', 'text-stone-600', 'border-orange-100');
+      });
+
+      const activeTab = event.currentTarget;
+      activeTab.classList.add('bg-orange-600', 'text-white', 'shadow-lg', 'shadow-orange-200', 'border-orange-600');
+      activeTab.classList.remove('bg-white', 'text-stone-600', 'border-orange-100');
+    }
   </script>
 </body>
+
 </html>
